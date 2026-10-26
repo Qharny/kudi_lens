@@ -19,7 +19,10 @@ class PendingAlertsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            const Text('Needs Details'),
+            const Text(
+              'Needs Details',
+              style: TextStyle(fontWeight: FontWeight.w800),
+            ),
             const SizedBox(width: 8),
             if (pendingAlerts.isNotEmpty)
               Container(
@@ -28,15 +31,15 @@ class PendingAlertsScreen extends ConsumerWidget {
                   color: AppColors.pending.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: AppColors.pending.withOpacity(0.4),
+                    color: AppColors.pending.withOpacity(0.35),
                   ),
                 ),
                 child: Text(
                   '${pendingAlerts.length}',
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.pending,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.pendingDark,
                   ),
                 ),
               ),
@@ -45,39 +48,78 @@ class PendingAlertsScreen extends ConsumerWidget {
       ),
       body: pendingAlerts.isEmpty
           ? Center(
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // Clean Solid Checkmark Badge (No gradient, No glow)
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      width: 72,
+                      height: 72,
                       decoration: BoxDecoration(
-                        color: AppColors.income.withOpacity(0.12),
+                        color: AppColors.income.withOpacity(palette.isDark ? 0.2 : 0.12),
                         shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.income.withOpacity(0.3),
+                          width: 1.5,
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.check_circle_outline_rounded,
-                        size: 48,
-                        color: AppColors.income,
+                      child: const Center(
+                        child: Icon(
+                          Icons.check_circle_outline_rounded,
+                          size: 38,
+                          color: AppColors.income,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     Text(
-                      'All caught up!',
+                      'All Caught Up!',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.4,
                         color: palette.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(
-                      'All recent bank and MoMo alerts have been categorized.',
+                      'Every bank alert and MoMo notification has been categorized. Your spend ledger is completely up to date.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13,
                         color: palette.textSecondary,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => const AddTransactionSheet(),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 11),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 1,
+                      ),
+                      icon: const Icon(Icons.add_rounded, size: 18),
+                      label: const Text(
+                        'Record Manual Expense',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],
@@ -85,7 +127,7 @@ class PendingAlertsScreen extends ConsumerWidget {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.only(top: 8, bottom: 40),
               itemCount: pendingAlerts.length,
               itemBuilder: (context, index) {
                 final alert = pendingAlerts[index];
@@ -93,20 +135,43 @@ class PendingAlertsScreen extends ConsumerWidget {
                   key: Key(alert.id),
                   direction: DismissDirection.endToStart,
                   background: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.expense,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 24),
-                    color: AppColors.expense.withOpacity(0.8),
-                    child: const Icon(Icons.delete_outline_rounded,
-                        color: Colors.white),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Dismiss',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.delete_outline_rounded,
+                            color: Colors.white, size: 20),
+                      ],
+                    ),
                   ),
                   onDismissed: (_) {
                     ref
                         .read(pendingAlertsProvider.notifier)
                         .dismissAlert(alert.id);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Alert dismissed'),
-                        duration: Duration(seconds: 2),
+                      SnackBar(
+                        content: const Text('Alert dismissed from inbox'),
+                        backgroundColor: palette.surface,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        duration: const Duration(seconds: 2),
                       ),
                     );
                   },
@@ -133,6 +198,10 @@ class PendingAlertsScreen extends ConsumerWidget {
                         SnackBar(
                           content: Text('Saved as $category!'),
                           backgroundColor: palette.surface,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           duration: const Duration(seconds: 2),
                         ),
                       );
@@ -149,3 +218,4 @@ class PendingAlertsScreen extends ConsumerWidget {
     );
   }
 }
+

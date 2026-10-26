@@ -17,13 +17,10 @@ class AppShell extends ConsumerStatefulWidget {
 class _AppShellState extends ConsumerState<AppShell> {
   int _currentIndex = 0;
 
-  void _onTabTapped(int index) {
-    setState(() => _currentIndex = index);
-  }
-
   @override
   Widget build(BuildContext context) {
     final pendingCount = ref.watch(pendingAlertsCountProvider);
+    final palette = context.palette;
 
     final screens = [
       HomeScreen(
@@ -35,72 +32,145 @@ class _AppShellState extends ConsumerState<AppShell> {
     ];
 
     return Scaffold(
+      backgroundColor: palette.bg,
+      extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: screens,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: context.palette.border,
-              width: 1,
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            color: palette.surface,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: palette.border,
+              width: 1.5,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: palette.isDark
+                    ? Colors.black.withOpacity(0.4)
+                    : const Color(0xFF1E293B).withOpacity(0.12),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildCartoonNavItem(
+                index: 0,
+                icon: Icons.account_balance_wallet_outlined,
+                activeIcon: Icons.account_balance_wallet_rounded,
+                label: 'Home',
+                badgeCount: pendingCount,
+                palette: palette,
+              ),
+              _buildCartoonNavItem(
+                index: 1,
+                icon: Icons.pie_chart_outline_rounded,
+                activeIcon: Icons.pie_chart_rounded,
+                label: 'Analytics',
+                palette: palette,
+              ),
+              _buildCartoonNavItem(
+                index: 2,
+                icon: Icons.credit_card_outlined,
+                activeIcon: Icons.credit_card_rounded,
+                label: 'Wallets',
+                palette: palette,
+              ),
+              _buildCartoonNavItem(
+                index: 3,
+                icon: Icons.tune_rounded,
+                activeIcon: Icons.tune_rounded,
+                label: 'Settings',
+                palette: palette,
+              ),
+            ],
           ),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped,
-          backgroundColor: context.palette.surface,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: context.palette.textMuted,
-          type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  Widget _buildCartoonNavItem({
+    required int index,
+    required IconData icon,
+    required IconData activeIcon,
+    required String label,
+    required AppPalette palette,
+    int badgeCount = 0,
+  }) {
+    final isSelected = _currentIndex == index;
+
+    return GestureDetector(
+      onTap: () => setState(() => _currentIndex = index),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOutBack,
+        padding: isSelected
+            ? const EdgeInsets.symmetric(horizontal: 14, vertical: 8)
+            : const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.14)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primary.withOpacity(0.35)
+                : Colors.transparent,
+            width: 1.2,
           ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-          items: [
-            BottomNavigationBarItem(
-              icon: Stack(
-                children: [
-                  const Icon(Icons.account_balance_wallet_outlined),
-                  if (pendingCount > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: AppColors.pending,
-                          shape: BoxShape.circle,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  isSelected ? activeIcon : icon,
+                  size: 22,
+                  color: isSelected ? AppColors.primary : palette.textMuted,
+                ),
+                if (badgeCount > 0)
+                  Positioned(
+                    right: -4,
+                    top: -4,
+                    child: Container(
+                      width: 9,
+                      height: 9,
+                      decoration: BoxDecoration(
+                        color: AppColors.pending,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: palette.surface,
+                          width: 1.5,
                         ),
                       ),
                     ),
-                ],
+                  ),
+              ],
+            ),
+            if (isSelected) ...[
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primary,
+                  letterSpacing: -0.2,
+                ),
               ),
-              activeIcon: const Icon(Icons.account_balance_wallet_rounded),
-              label: 'Dashboard',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.pie_chart_outline_rounded),
-              activeIcon: Icon(Icons.pie_chart_rounded),
-              label: 'Analytics',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card_outlined),
-              activeIcon: Icon(Icons.credit_card_rounded),
-              label: 'Wallets',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.tune_rounded),
-              activeIcon: Icon(Icons.tune_rounded),
-              label: 'Settings',
-            ),
+            ],
           ],
         ),
       ),

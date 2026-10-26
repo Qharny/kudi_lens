@@ -16,167 +16,288 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    Color providerColor;
-    IconData providerIcon;
+    // Unique cartoon styling tailored to provider
+    LinearGradient cardGradient;
+    Color chipColor;
+    String providerLabel;
+    Widget providerIconWidget;
 
     switch (account.provider) {
       case 'calbank':
-        providerColor = const Color(0xFF2563EB); // Royal Blue
-        providerIcon = Icons.account_balance_rounded;
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF1D4ED8), Color(0xFF1E3A8A), Color(0xFF0F172A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFB300);
+        providerLabel = 'CALBANK';
+        providerIconWidget = _buildMiniChip(chipColor);
         break;
       case 'mtn_momo':
-        providerColor = const Color(0xFFCA8A04); // MoMo Amber
-        providerIcon = Icons.phone_android_rounded;
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFFFC000), Color(0xFFF59E0B), Color(0xFFD97706)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = Colors.black87;
+        providerLabel = 'MTN MoMo';
+        providerIconWidget = Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.85),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: const Text(
+            'MoMo',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              color: Color(0xFFFFC000),
+            ),
+          ),
+        );
         break;
       case 'telecel':
-        providerColor = const Color(0xFFEF4444); // Telecel Red
-        providerIcon = Icons.contactless_rounded;
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFEF4444), Color(0xFFDC2626), Color(0xFF991B1B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = Colors.white;
+        providerLabel = 'TELECEL';
+        providerIconWidget = const Icon(Icons.contactless_rounded, color: Colors.white, size: 22);
         break;
       case 'cash':
       default:
-        providerColor = AppColors.cash;
-        providerIcon = Icons.money_rounded;
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF059669), Color(0xFF047857), Color(0xFF064E3B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = Colors.white;
+        providerLabel = 'CASH WALLET';
+        providerIconWidget = const Icon(Icons.payments_rounded, color: Colors.white, size: 22);
         break;
     }
+
+    final isMoMo = account.provider == 'mtn_momo';
+    final textColor = isMoMo ? const Color(0xFF1F2937) : Colors.white;
+    final textMutedColor = isMoMo ? const Color(0xFF4B5563) : Colors.white70;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: palette.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: palette.border),
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.18),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: providerColor.withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              providerIcon,
-                              color: providerColor,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: cardGradient,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: Colors.white.withOpacity(isMoMo ? 0.35 : 0.2),
+              width: 1.5,
+            ),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(22),
+              child: Stack(
+                children: [
+                  // Decorative cartoon sheen orb
+                  Positioned(
+                    top: -25,
+                    right: -25,
+                    child: Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(isMoMo ? 0.2 : 0.12),
+                      ),
+                    ),
+                  ),
+
+                  // Card Content
+                  Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Top Row: Chip/Icon & Brand Label + Default Badge
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               children: [
+                                providerIconWidget,
+                                const SizedBox(width: 10),
                                 Text(
-                                  account.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: palette.textPrimary,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  account.maskedNumber,
+                                  providerLabel,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: palette.textMuted,
-                                    fontFamily: 'monospace',
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.2,
+                                    color: textColor,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (account.isDefault) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(6),
+                            if (account.isDefault)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(isMoMo ? 0.35 : 0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.4),
+                                  ),
+                                ),
+                                child: Text(
+                                  'DEFAULT',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 0.8,
+                                    color: textColor,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                        child: const Text(
-                          'Default',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Divider(height: 1, color: palette.border),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                        const SizedBox(height: 14),
+
+                        // Account Name & Masked Digits
                         Text(
-                          'Last Reported Balance',
+                          account.name,
                           style: TextStyle(
-                            fontSize: 11,
-                            color: palette.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          CurrencyFormatter.format(account.lastBalance),
-                          style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.w800,
-                            color: palette.textPrimary,
+                            color: textColor,
                           ),
                         ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: const BoxDecoration(
-                            color: AppColors.income,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
+                        const SizedBox(height: 2),
                         Text(
-                          DateFormatter.formatShortDate(account.lastBalanceDate),
+                          account.maskedNumber,
                           style: TextStyle(
-                            fontSize: 11,
-                            color: palette.textSecondary,
+                            fontSize: 12,
+                            fontFamily: 'monospace',
+                            letterSpacing: 1.5,
+                            color: textMutedColor,
                           ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Balance & Reconciled Status
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'BALANCE',
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 1.1,
+                                    color: textMutedColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  CurrencyFormatter.format(account.lastBalance),
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: -0.5,
+                                    color: textColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(isMoMo ? 0.1 : 0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 7,
+                                    height: 7,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF10B981),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    DateFormatter.formatShortDate(account.lastBalanceDate),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: textColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMiniChip(Color color) {
+    return Container(
+      width: 28,
+      height: 20,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: const Color(0xFF78350F).withOpacity(0.6),
+          width: 0.8,
+        ),
+      ),
+      child: Center(
+        child: Container(
+          width: 10,
+          height: 8,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(
+              color: const Color(0xFF78350F).withOpacity(0.5),
+              width: 0.6,
             ),
           ),
         ),

@@ -40,19 +40,30 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     return Scaffold(
       backgroundColor: palette.bg,
       appBar: AppBar(
-        title: const Text('Analytics & Summaries'),
+        title: const Text(
+          'Analytics & Summaries',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Period Selector Pills
+            // Period Selector Switch
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: palette.card,
-                borderRadius: BorderRadius.circular(12),
+                color: palette.surface,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: palette.border, width: 1.2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(palette.isDark ? 0.2 : 0.04),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Row(
                 children: [
@@ -64,26 +75,28 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Honest Metrics Grid: Spending, Income, Fees, Transfers
+            // Honest Metrics Grid: 4 Clean Blocks
             Row(
               children: [
                 Expanded(
-                  child: _buildMetricTile(
+                  child: _buildMetricBlock(
                     palette: palette,
                     title: 'Net Spending',
                     amount: periodSpend,
                     accentColor: AppColors.expense,
-                    icon: Icons.arrow_downward_rounded,
+                    icon: Icons.trending_down_rounded,
+                    tagText: 'Real Outflow',
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildMetricTile(
+                  child: _buildMetricBlock(
                     palette: palette,
                     title: 'Total Income',
                     amount: totalIncome,
                     accentColor: AppColors.income,
-                    icon: Icons.arrow_upward_rounded,
+                    icon: Icons.trending_up_rounded,
+                    tagText: 'Inflows',
                   ),
                 ),
               ],
@@ -92,24 +105,24 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             Row(
               children: [
                 Expanded(
-                  child: _buildMetricTile(
+                  child: _buildMetricBlock(
                     palette: palette,
                     title: 'Bank Fees',
                     amount: totalFees,
                     accentColor: AppColors.fee,
                     icon: Icons.receipt_long_rounded,
-                    subtitle: 'Charges & Levies',
+                    tagText: 'Charges & E-Levy',
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildMetricTile(
+                  child: _buildMetricBlock(
                     palette: palette,
                     title: 'Wallet Transfers',
                     amount: totalTransfers,
                     accentColor: AppColors.transfer,
                     icon: Icons.swap_horiz_rounded,
-                    subtitle: 'Between Accounts',
+                    tagText: 'Internal Legs',
                   ),
                 ),
               ],
@@ -120,26 +133,41 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             if (pendingCount > 0)
               Container(
                 margin: const EdgeInsets.only(bottom: 16),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.pending.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(10),
+                  color: palette.surface,
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: AppColors.pending.withOpacity(0.3),
+                    color: AppColors.pending.withOpacity(0.4),
+                    width: 1.2,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(palette.isDark ? 0.2 : 0.04),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline_rounded,
-                        size: 16, color: AppColors.pending),
-                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.pending.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(Icons.bolt_rounded,
+                          size: 15, color: AppColors.pendingDark),
+                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Totals exclude $pendingCount pending bank alerts awaiting classification.',
+                        'Metrics exclude $pendingCount unfiled alerts awaiting your classification.',
                         style: TextStyle(
                           fontSize: 12,
-                          color: palette.textSecondary,
+                          fontWeight: FontWeight.w600,
+                          color: palette.textPrimary,
                         ),
                       ),
                     ),
@@ -147,14 +175,32 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 ),
               ),
 
-            // Spending Breakdown Heading
-            Text(
-              'Spending by Category',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: palette.textPrimary,
-              ),
+            // Spending Breakdown Heading with clean badge
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.pie_chart_rounded,
+                    size: 15,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Spending by Category',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                    color: palette.textPrimary,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
 
@@ -177,14 +223,14 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected ? AppColors.primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
           ),
           alignment: Alignment.center,
           child: Text(
             label,
             style: TextStyle(
-              fontSize: 12,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              fontSize: 11,
+              fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
               color: isSelected ? Colors.white : palette.textSecondary,
             ),
           ),
@@ -193,66 +239,90 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     );
   }
 
-  Widget _buildMetricTile({
+  Widget _buildMetricBlock({
     required AppPalette palette,
     required String title,
     required double amount,
     required Color accentColor,
     required IconData icon,
-    String? subtitle,
+    required String tagText,
   }) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: palette.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: palette.border),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: palette.border,
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(palette.isDark ? 0.2 : 0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Clean Solid Icon Container (No gradient, No glow)
               Container(
-                padding: const EdgeInsets.all(5),
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: accentColor.withOpacity(palette.isDark ? 0.2 : 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: accentColor.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(icon, size: 16, color: accentColor),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: accentColor.withOpacity(0.12),
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                child: Icon(icon, size: 14, color: accentColor),
-              ),
-              const SizedBox(width: 6),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: palette.textSecondary,
+                child: Text(
+                  tagText,
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                    color: accentColor,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: palette.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 3),
           Text(
             CurrencyFormatter.format(amount),
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 18,
               fontWeight: FontWeight.w800,
+              letterSpacing: -0.4,
               color: palette.textPrimary,
             ),
           ),
-          if (subtitle != null) ...[
-            const SizedBox(height: 2),
-            Text(
-              subtitle,
-              style: TextStyle(
-                fontSize: 10,
-                color: palette.textMuted,
-              ),
-            ),
-          ],
         ],
       ),
     );
   }
 }
+

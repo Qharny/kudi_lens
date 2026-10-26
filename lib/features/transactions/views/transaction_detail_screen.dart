@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/category.dart';
 import '../../../../core/models/transaction.dart';
@@ -39,12 +40,23 @@ class TransactionDetailScreen extends ConsumerWidget {
     final isIncome = tx.type == TransactionType.income;
     final isFee = tx.type == TransactionType.fee;
     final isTransfer = tx.type == TransactionType.transfer;
+    final primaryColor = isFee
+        ? AppColors.fee
+        : isTransfer
+            ? AppColors.transfer
+            : isIncome
+                ? AppColors.income
+                : category.color;
+
     final palette = context.palette;
 
     return Scaffold(
       backgroundColor: palette.bg,
       appBar: AppBar(
-        title: const Text('Transaction Details'),
+        title: const Text(
+          'Transaction Details',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),
@@ -65,15 +77,28 @@ class TransactionDetailScreen extends ConsumerWidget {
                 context: context,
                 builder: (ctx) => AlertDialog(
                   backgroundColor: palette.surface,
-                  title: const Text('Delete Transaction?'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22),
+                    side: BorderSide(color: palette.border, width: 1.5),
+                  ),
+                  title: Text(
+                    'Delete Transaction?',
+                    style: TextStyle(
+                      color: palette.textPrimary,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                   content: Text(
-                    'Are you sure you want to remove this transaction record?',
+                    'Are you sure you want to remove this record from your expense history?',
                     style: TextStyle(color: palette.textSecondary),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(ctx).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: palette.textMuted),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -83,8 +108,13 @@ class TransactionDetailScreen extends ConsumerWidget {
                         Navigator.of(ctx).pop();
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Delete',
-                          style: TextStyle(color: AppColors.expense)),
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: AppColors.expense,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -94,104 +124,162 @@ class TransactionDetailScreen extends ConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Hero Amount & Direction
+            // Cartoon Digital Receipt Card
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               decoration: BoxDecoration(
                 color: palette.surface,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: palette.border),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isFee
-                          ? AppColors.fee.withOpacity(0.12)
-                          : isTransfer
-                              ? AppColors.transfer.withOpacity(0.12)
-                              : isIncome
-                                  ? AppColors.income.withOpacity(0.12)
-                                  : category.color.withOpacity(0.12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      isFee
-                          ? Icons.receipt_long_rounded
-                          : isTransfer
-                              ? Icons.swap_horiz_rounded
-                              : isIncome
-                                  ? Icons.arrow_downward_rounded
-                                  : category.icon,
-                      color: isFee
-                          ? AppColors.fee
-                          : isTransfer
-                              ? AppColors.transfer
-                              : isIncome
-                                  ? AppColors.income
-                                  : category.color,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    CurrencyFormatter.format(tx.amount),
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                      color: palette.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CategoryBadge(categoryName: tx.category ?? 'Unclassified'),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: tx.source == TransactionSource.bankAlert
-                              ? AppColors.primary.withOpacity(0.12)
-                              : palette.card,
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                            color: tx.source == TransactionSource.bankAlert
-                                ? AppColors.primary.withOpacity(0.3)
-                                : palette.border,
-                          ),
-                        ),
-                        child: Text(
-                          tx.source.displayName,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: tx.source == TransactionSource.bankAlert
-                                ? AppColors.primary
-                                : palette.textSecondary,
-                          ),
-                        ),
-                      ),
-                    ],
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: primaryColor.withOpacity(0.35),
+                  width: 1.8,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(palette.isDark ? 0.25 : 0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Column(
+                  children: [
+                    // Top Receipt Header Banner
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withOpacity(palette.isDark ? 0.2 : 0.1),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: primaryColor.withOpacity(0.25),
+                            width: 1.2,
+                          ),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            tx.type.displayName.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.8,
+                              color: primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-            // Metadata card
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                      child: Column(
+                        children: [
+                          // Category Icon Bubble
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: primaryColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: primaryColor.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Icon(
+                              isFee
+                                  ? Icons.receipt_long_rounded
+                                  : isTransfer
+                                      ? Icons.swap_horiz_rounded
+                                      : isIncome
+                                          ? Icons.arrow_downward_rounded
+                                          : category.icon,
+                              color: primaryColor,
+                              size: 30,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+
+                          // Amount
+                          Text(
+                            CurrencyFormatter.format(tx.amount),
+                            style: TextStyle(
+                              fontSize: 34,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -1,
+                              color: palette.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // Badges Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CategoryBadge(categoryName: tx.category ?? 'Unclassified'),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: tx.source == TransactionSource.bankAlert
+                                      ? AppColors.primary.withOpacity(0.12)
+                                      : palette.card,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: tx.source == TransactionSource.bankAlert
+                                        ? AppColors.primary.withOpacity(0.3)
+                                        : palette.border,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  tx.source.displayName,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: tx.source == TransactionSource.bankAlert
+                                        ? AppColors.primary
+                                        : palette.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Metadata Card
             Container(
               decoration: BoxDecoration(
                 color: palette.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: palette.border),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: palette.border, width: 1.4),
+                boxShadow: palette.cardShadow,
               ),
               child: Column(
                 children: [
@@ -201,17 +289,17 @@ class TransactionDetailScreen extends ConsumerWidget {
                     label: 'Date & Time',
                     value: DateFormatter.formatFull(tx.date),
                   ),
-                  Divider(height: 1, indent: 50, color: palette.border),
+                  Divider(height: 1, indent: 52, color: palette.border),
                   _buildPropertyRow(
                     palette: palette,
                     icon: Icons.account_balance_wallet_rounded,
-                    label: 'Account',
+                    label: 'Account / Wallet',
                     value: account != null
                         ? '${account.name} (${account.maskedNumber})'
                         : 'Unassigned',
                   ),
                   if (tx.merchant != null) ...[
-                    Divider(height: 1, indent: 50, color: palette.border),
+                    Divider(height: 1, indent: 52, color: palette.border),
                     _buildPropertyRow(
                       palette: palette,
                       icon: Icons.storefront_rounded,
@@ -220,7 +308,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                     ),
                   ],
                   if (tx.location != null) ...[
-                    Divider(height: 1, indent: 50, color: palette.border),
+                    Divider(height: 1, indent: 52, color: palette.border),
                     _buildPropertyRow(
                       palette: palette,
                       icon: Icons.location_on_outlined,
@@ -229,17 +317,17 @@ class TransactionDetailScreen extends ConsumerWidget {
                     ),
                   ],
                   if (tx.balanceAfter != null) ...[
-                    Divider(height: 1, indent: 50, color: palette.border),
+                    Divider(height: 1, indent: 52, color: palette.border),
                     _buildPropertyRow(
                       palette: palette,
                       icon: Icons.account_balance_rounded,
-                      label: 'Balance After',
+                      label: 'Balance After Alert',
                       value: CurrencyFormatter.format(tx.balanceAfter!),
-                      valueColor: AppColors.primary,
+                      valueColor: AppColors.income,
                     ),
                   ],
                   if (tx.note != null && tx.note!.isNotEmpty) ...[
-                    Divider(height: 1, indent: 50, color: palette.border),
+                    Divider(height: 1, indent: 52, color: palette.border),
                     _buildPropertyRow(
                       palette: palette,
                       icon: Icons.notes_rounded,
@@ -253,24 +341,32 @@ class TransactionDetailScreen extends ConsumerWidget {
 
             // Linked Transfer or Fee Leg if present
             if (tx.linkedTransactionId != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: AppColors.transfer.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: AppColors.transfer.withOpacity(0.25),
+                    color: AppColors.transfer.withOpacity(0.3),
+                    width: 1.4,
                   ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.link_rounded,
-                      color: AppColors.transfer,
-                      size: 20,
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.transfer.withOpacity(0.18),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.swap_horiz_rounded,
+                        color: AppColors.transfer,
+                        size: 20,
+                      ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,17 +374,18 @@ class TransactionDetailScreen extends ConsumerWidget {
                           const Text(
                             'Linked Transfer Leg',
                             style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
                               color: AppColors.transfer,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Matched with internal wallet transfer. Excluded from spending total.',
+                            'Internal wallet transfer. Automatically excluded from net spending total.',
                             style: TextStyle(
                               fontSize: 11,
                               color: palette.textSecondary,
+                              height: 1.3,
                             ),
                           ),
                         ],
@@ -301,34 +398,90 @@ class TransactionDetailScreen extends ConsumerWidget {
 
             // Raw Alert Message (Audit Trail)
             if (tx.rawMessage != null) ...[
-              const SizedBox(height: 20),
-              Text(
-                'Original Bank Alert',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: palette.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: palette.card,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: palette.border),
+                  color: palette.isDark
+                      ? const Color(0xFF0F172A)
+                      : const Color(0xFFF8FAFC),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: palette.border, width: 1.4),
                 ),
-                child: Text(
-                  tx.rawMessage!,
-                  style: TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 12,
-                    color: palette.textSecondary,
-                    height: 1.5,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.terminal_rounded,
+                                size: 14, color: AppColors.primary),
+                            SizedBox(width: 6),
+                            Text(
+                              'ORIGINAL BANK ALERT AUDIT TRAIL',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.5,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(ClipboardData(text: tx.rawMessage!));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Copied alert to clipboard!'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: palette.card,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: palette.border),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.copy_rounded,
+                                    size: 11, color: palette.textSecondary),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'Copy',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: palette.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      tx.rawMessage!,
+                      style: TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 11,
+                        color: palette.textSecondary,
+                        height: 1.45,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
+
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -343,15 +496,23 @@ class TransactionDetailScreen extends ConsumerWidget {
     Color? valueColor,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: palette.textMuted),
-          const SizedBox(width: 14),
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: palette.card,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 15, color: palette.textSecondary),
+          ),
+          const SizedBox(width: 12),
           Text(
             label,
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
               color: palette.textSecondary,
             ),
           ),
@@ -361,8 +522,8 @@ class TransactionDetailScreen extends ConsumerWidget {
               value,
               textAlign: TextAlign.end,
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
                 color: valueColor ?? palette.textPrimary,
               ),
             ),
@@ -372,3 +533,4 @@ class TransactionDetailScreen extends ConsumerWidget {
     );
   }
 }
+

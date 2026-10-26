@@ -110,85 +110,129 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
 
     return Container(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-        top: 16,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        top: 14,
         left: 20,
         right: 20,
       ),
       decoration: BoxDecoration(
         color: palette.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        border: Border.all(color: palette.border, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.18),
+            blurRadius: 24,
+            offset: const Offset(0, -6),
+          ),
+        ],
       ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Handle bar
+            // Bubbly Handle bar
             Center(
               child: Container(
-                width: 40,
-                height: 4,
+                width: 44,
+                height: 5,
                 decoration: BoxDecoration(
-                  color: palette.border,
-                  borderRadius: BorderRadius.circular(2),
+                  color: palette.isDark
+                      ? const Color(0xFF475569)
+                      : const Color(0xFFCBD5E1),
+                  borderRadius: BorderRadius.circular(3),
                 ),
               ),
             ),
             const SizedBox(height: 16),
 
-            // Sheet Title
-            Text(
-              widget.initialTransaction != null
-                  ? (widget.initialTransaction!.status.isPending
-                      ? 'Categorize Bank Alert'
-                      : 'Edit Transaction')
-                  : 'Add Transaction',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: palette.textPrimary,
-              ),
+            // Sheet Title with cartoon badge
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.initialTransaction != null
+                      ? (widget.initialTransaction!.status.isPending
+                          ? 'Classify Bank Alert'
+                          : 'Edit Transaction')
+                      : 'Record New Spend',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -0.4,
+                    color: palette.textPrimary,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: palette.card,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: palette.border, width: 1.2),
+                    ),
+                    child: Icon(Icons.close_rounded,
+                        size: 16, color: palette.textMuted),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
-            // Segmented Transaction Type Selector
+            // 4 Clean Push-Buttons for Transaction Type
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 color: palette.card,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: palette.border, width: 1),
               ),
               child: Row(
                 children: [
-                  _buildTypeTab(TransactionType.expense, 'Expense', AppColors.expense),
-                  _buildTypeTab(TransactionType.income, 'Income', AppColors.income),
-                  _buildTypeTab(TransactionType.transfer, 'Transfer', AppColors.transfer),
-                  _buildTypeTab(TransactionType.fee, 'Fee', AppColors.fee),
+                  _buildTypeTab(TransactionType.expense, 'Expense', AppColors.expense, Icons.arrow_downward_rounded),
+                  _buildTypeTab(TransactionType.income, 'Income', AppColors.income, Icons.arrow_upward_rounded),
+                  _buildTypeTab(TransactionType.transfer, 'Transfer', AppColors.transfer, Icons.swap_horiz_rounded),
+                  _buildTypeTab(TransactionType.fee, 'Fee', AppColors.fee, Icons.receipt_long_rounded),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
-            // Hero Amount Input
+            // Hero Amount Box
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: palette.bg,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: palette.border),
+                color: palette.isDark
+                    ? const Color(0xFF0F172A)
+                    : const Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.primary.withOpacity(0.3),
+                  width: 1.4,
+                ),
               ),
               child: Row(
                 children: [
-                  const Text(
-                    'GHS',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+                  // Clean Solid GHS Badge (No gradient, No glow)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                    decoration: BoxDecoration(
                       color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'GHS',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: TextField(
                       controller: _amountController,
@@ -198,6 +242,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
+                        letterSpacing: -0.8,
                         color: palette.textPrimary,
                       ),
                       decoration: InputDecoration(
@@ -205,8 +250,11 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         hintStyle: TextStyle(
                           color: palette.textMuted,
                           fontSize: 28,
+                          fontWeight: FontWeight.w700,
                         ),
                         border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
                       ),
                     ),
                   ),
@@ -215,12 +263,13 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
             ),
             const SizedBox(height: 16),
 
-            // Category Picker
+            // Category Picker with clean solid chips
             Text(
-              'Category',
+              'CATEGORY',
               style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.6,
                 color: palette.textSecondary,
               ),
             ),
@@ -241,25 +290,26 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                           horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? cat.color.withOpacity(0.18)
+                            ? cat.color.withOpacity(palette.isDark ? 0.22 : 0.12)
                             : palette.card,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isSelected ? cat.color : palette.border,
+                          width: isSelected ? 1.5 : 1,
                         ),
                       ),
                       child: Row(
                         children: [
                           Icon(
                             cat.icon,
-                            size: 16,
+                            size: 15,
                             color: isSelected ? cat.color : palette.textSecondary,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             cat.name,
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight:
                                   isSelected ? FontWeight.w700 : FontWeight.w500,
                               color: isSelected
@@ -284,10 +334,11 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Account / Wallet',
+                        'WALLET / ACCOUNT',
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.6,
                           color: palette.textSecondary,
                         ),
                       ),
@@ -296,8 +347,8 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           color: palette.card,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: palette.border),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: palette.border, width: 1),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -306,12 +357,17 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                             dropdownColor: palette.surface,
                             style: TextStyle(
                               color: palette.textPrimary,
-                              fontSize: 14,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
                             ),
                             items: accounts.map((acc) {
                               return DropdownMenuItem<String>(
                                 value: acc.id,
-                                child: Text(acc.name),
+                                child: Text(
+                                  acc.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               );
                             }).toList(),
                             onChanged: (val) {
@@ -331,10 +387,11 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Date',
+                        'DATE',
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.6,
                           color: palette.textSecondary,
                         ),
                       ),
@@ -353,24 +410,25 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 14),
+                              horizontal: 12, vertical: 12),
                           decoration: BoxDecoration(
                             color: palette.card,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: palette.border),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: palette.border, width: 1),
                           ),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.calendar_today_rounded,
-                                size: 16,
+                                size: 14,
                                 color: palette.textSecondary,
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 DateFormatter.formatShortDate(_selectedDate),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                   color: palette.textPrimary,
                                 ),
                               ),
@@ -383,73 +441,74 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
             // Merchant / Recipient input
             TextField(
               controller: _merchantController,
-              style: TextStyle(color: palette.textPrimary),
+              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w600),
               decoration: InputDecoration(
                 labelText: 'Merchant / Recipient (Optional)',
-                labelStyle: TextStyle(color: palette.textSecondary),
+                labelStyle: TextStyle(color: palette.textSecondary, fontSize: 12),
                 filled: true,
                 fillColor: palette.card,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: palette.border),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: palette.border, width: 1),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: palette.border),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: palette.border, width: 1),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
 
             // Note input
             TextField(
               controller: _noteController,
-              style: TextStyle(color: palette.textPrimary),
+              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w600),
               decoration: InputDecoration(
-                labelText: 'Note (Optional)',
-                labelStyle: TextStyle(color: palette.textSecondary),
+                labelText: 'Personal Note (Optional)',
+                labelStyle: TextStyle(color: palette.textSecondary, fontSize: 12),
                 filled: true,
                 fillColor: palette.card,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: palette.border),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: palette.border, width: 1),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: palette.border),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: palette.border, width: 1),
                 ),
               ),
             ),
 
-            // Raw Alert reference box if pre-filled
+            // Raw Alert Message Slip if pre-filled
             if (widget.initialTransaction?.rawMessage != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: palette.bg,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: palette.border),
+                  color: palette.card,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: palette.border, width: 1),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.mark_email_read_rounded,
-                            size: 14, color: AppColors.primary),
+                        Icon(Icons.bolt_rounded,
+                            size: 14, color: AppColors.pendingDark),
                         SizedBox(width: 6),
                         Text(
-                          'Original Alert Message',
+                          'ORIGINAL SMS NOTIFICATION',
                           style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.5,
+                            color: AppColors.pendingDark,
                           ),
                         ),
                       ],
@@ -458,7 +517,8 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                     Text(
                       widget.initialTransaction!.rawMessage!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 11,
+                        fontFamily: 'monospace',
                         color: palette.textSecondary,
                         height: 1.4,
                       ),
@@ -468,47 +528,36 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
               ),
             ],
 
-            // Create learned rule toggle
-            if (widget.initialTransaction?.narration != null) ...[
-              const SizedBox(height: 10),
-              CheckboxListTile(
-                value: _createRule,
-                onChanged: (val) => setState(() => _createRule = val ?? false),
-                title: Text(
-                  'Auto-categorize future alerts with "${widget.initialTransaction!.narration}"',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: palette.textSecondary,
-                  ),
-                ),
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: EdgeInsets.zero,
-                activeColor: AppColors.primary,
-              ),
-            ],
-
             const SizedBox(height: 20),
 
-            // Save Action Button
-            ElevatedButton(
-              onPressed: _onSave,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            // Clean Solid Save Button (No gradient, No glow)
+            GestureDetector(
+              onTap: _onSave,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                elevation: 0,
-              ),
-              child: Text(
-                widget.initialTransaction != null &&
-                        widget.initialTransaction!.status.isPending
-                    ? 'Confirm & Save'
-                    : 'Save Transaction',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                alignment: Alignment.center,
+                child: Text(
+                  widget.initialTransaction != null &&
+                          widget.initialTransaction!.status.isPending
+                      ? 'Confirm & Classify'
+                      : 'Save Transaction',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -518,7 +567,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
     );
   }
 
-  Widget _buildTypeTab(TransactionType type, String label, Color activeColor) {
+  Widget _buildTypeTab(TransactionType type, String label, Color activeColor, IconData icon) {
     final isSelected = _selectedType == type;
     return Expanded(
       child: GestureDetector(
@@ -527,19 +576,31 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected ? activeColor : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
           ),
           alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? Colors.white : context.palette.textSecondary,
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 15,
+                color: isSelected ? Colors.white : context.palette.textSecondary,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  color: isSelected ? Colors.white : context.palette.textSecondary,
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
+

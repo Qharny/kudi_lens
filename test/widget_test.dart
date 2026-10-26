@@ -12,6 +12,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Kudi Lens'), findsOneWidget);
-    expect(find.text('Dashboard'), findsOneWidget);
+    expect(find.text('Pocket Spend Tracker'), findsOneWidget);
   });
 }
