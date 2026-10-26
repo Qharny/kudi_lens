@@ -209,6 +209,3 @@ Domain logic testing includes:
 
 ---
 
-## 📄 Documentation
-
-For the comprehensive design document, parsing specifications, edge-case analysis, and data models, see [doc.md](file:///c:/Users/canny/Desktop/flutter/kudi_lens/doc.md).
