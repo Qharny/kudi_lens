@@ -19,11 +19,54 @@ class PendingAlertCard extends StatelessWidget {
     required this.onDismiss,
   });
 
+  String _resolveProviderName(TransactionItem alert) {
+    final accId = alert.accountId?.toLowerCase() ?? '';
+    final raw = alert.rawMessage?.toLowerCase() ?? '';
+    final narr = alert.narration?.toLowerCase() ?? '';
+
+    if (accId.contains('gcb') || raw.contains('gcb') || narr.contains('gcb')) {
+      return 'GCB Bank Alert';
+    }
+    if (accId.contains('ecobank') || raw.contains('ecobank')) {
+      return 'Ecobank Alert';
+    }
+    if (accId.contains('stanbic') || raw.contains('stanbic')) {
+      return 'Stanbic Alert';
+    }
+    if (accId.contains('absa') || raw.contains('absa')) {
+      return 'Absa Alert';
+    }
+    if (accId.contains('fidelity') || raw.contains('fidelity')) {
+      return 'Fidelity Alert';
+    }
+    if (accId.contains('zenith') || raw.contains('zenith')) {
+      return 'Zenith Alert';
+    }
+    if (accId.contains('access') || raw.contains('access')) {
+      return 'Access Alert';
+    }
+    if (accId.contains('stanchart') || raw.contains('standard chartered')) {
+      return 'Standard Chartered Alert';
+    }
+    if (accId.contains('calbank') || raw.contains('calbank') || raw.contains('@bnk')) {
+      return 'CalBank Alert';
+    }
+    if (accId.contains('telecel') || raw.contains('telecel')) {
+      return 'Telecel Cash Alert';
+    }
+    if (accId.contains('at_money') || raw.contains('airteltigo') || raw.contains('at money')) {
+      return 'AT Money Alert';
+    }
+    if (accId.contains('momo') || raw.contains('momo') || raw.contains('payment made')) {
+      return 'MTN MoMo Alert';
+    }
+    return 'Bank Alert';
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final isCalBank = alert.accountId == 'acc_calbank';
-    final providerName = isCalBank ? 'CalBank Alert' : 'MTN MoMo Alert';
+    final providerName = _resolveProviderName(alert);
 
     final quickCategories = [
       'Food & Dining',

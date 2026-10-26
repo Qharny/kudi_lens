@@ -23,6 +23,86 @@ class AccountCard extends StatelessWidget {
     Widget providerIconWidget;
 
     switch (account.provider) {
+      case 'gcb':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFD97706), Color(0xFFB45309), Color(0xFF1E293B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFE082);
+        providerLabel = 'GCB BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'ecobank':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF0284C7), Color(0xFF0369A1), Color(0xFF0C4A6E)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFE2E8F0);
+        providerLabel = 'ECOBANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'stanbic':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF2563EB), Color(0xFF1D4ED8), Color(0xFF1E3A8A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFB300);
+        providerLabel = 'STANBIC BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'absa':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFBE123C), Color(0xFF9F1239), Color(0xFF881337)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFE082);
+        providerLabel = 'ABSA BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'fidelity':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFEA580C), Color(0xFFC2410C), Color(0xFF1E293B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFB300);
+        providerLabel = 'FIDELITY BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'zenith':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFFDC2626), Color(0xFF991B1B), Color(0xFF18181B)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFE2E8F0);
+        providerLabel = 'ZENITH BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'access':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF1D4ED8), Color(0xFF1E3A8A), Color(0xFF9A3412)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFFFB300);
+        providerLabel = 'ACCESS BANK';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
+      case 'stanchart':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF059669), Color(0xFF047857), Color(0xFF0369A1)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = const Color(0xFFE2E8F0);
+        providerLabel = 'STANDARD CHARTERED';
+        providerIconWidget = _buildMiniChip(chipColor);
+        break;
       case 'calbank':
         cardGradient = const LinearGradient(
           colors: [Color(0xFF1D4ED8), Color(0xFF1E3A8A), Color(0xFF0F172A)],
@@ -64,7 +144,17 @@ class AccountCard extends StatelessWidget {
           end: Alignment.bottomRight,
         );
         chipColor = Colors.white;
-        providerLabel = 'TELECEL';
+        providerLabel = 'TELECEL CASH';
+        providerIconWidget = const Icon(Icons.contactless_rounded, color: Colors.white, size: 22);
+        break;
+      case 'at_money':
+        cardGradient = const LinearGradient(
+          colors: [Color(0xFF1E3A8A), Color(0xFF2563EB), Color(0xFFDC2626)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+        chipColor = Colors.white;
+        providerLabel = 'AT MONEY';
         providerIconWidget = const Icon(Icons.contactless_rounded, color: Colors.white, size: 22);
         break;
       case 'cash':

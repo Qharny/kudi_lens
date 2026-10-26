@@ -5,6 +5,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../data/account_provider.dart';
 import 'widgets/account_card.dart';
+import 'widgets/card_scanner_modal.dart';
+import 'widgets/slideable_account_card.dart';
 
 class AccountsScreen extends ConsumerWidget {
   const AccountsScreen({super.key});
@@ -44,6 +46,46 @@ class AccountsScreen extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Quick OCR Scanner Option
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(ctx).pop();
+                      _openCardScanner(context, ref);
+                    },
+                    borderRadius: BorderRadius.circular(14),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(palette.isDark ? 0.2 : 0.08),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.35),
+                          width: 1.2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.document_scanner_rounded,
+                              size: 18, color: AppColors.primary),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Scan Card with Camera OCR',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+
                 DropdownButtonFormField<String>(
                   value: selectedProvider,
                   dropdownColor: palette.surface,
@@ -57,16 +99,19 @@ class AccountsScreen extends ConsumerWidget {
                       borderSide: BorderSide(color: palette.border),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                        value: 'calbank', child: Text('CalBank Ghana')),
-                    DropdownMenuItem(
-                        value: 'mtn_momo', child: Text('MTN MoMo')),
-                    DropdownMenuItem(
-                        value: 'telecel', child: Text('Telecel Cash')),
-                    DropdownMenuItem(
-                        value: 'cash', child: Text('Cash Wallet')),
-                  ],
+                  items: BankProvider.all.map((p) {
+                    return DropdownMenuItem<String>(
+                      value: p.id,
+                      child: Text(
+                        p.name,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: palette.textPrimary,
+                        ),
+                      ),
+                    );
+                  }).toList(),
                   onChanged: (val) {
                     if (val != null) setState(() => selectedProvider = val);
                   },
@@ -184,7 +229,14 @@ class AccountsScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.document_scanner_rounded,
+                size: 22, color: palette.textPrimary),
+            tooltip: 'Scan Card with OCR',
+            onPressed: () => _openCardScanner(context, ref),
+          ),
+          IconButton(
             icon: Icon(Icons.add_rounded, size: 24, color: palette.textPrimary),
+            tooltip: 'Add Account Manually',
             onPressed: () => _showAddAccountDialog(context, ref),
           ),
           const SizedBox(width: 8),
@@ -263,61 +315,136 @@ class AccountsScreen extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
 
-          // Accounts List
+          // Slide Action Hint
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            child: Row(
+              children: [
+                Icon(Icons.swipe_rounded, size: 14, color: palette.textMuted),
+                const SizedBox(width: 6),
+                Text(
+                  'Slide cards left to adjust/delete, right to set default',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: palette.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Accounts List with Slideable Actions
           ...accounts.map(
-            (acc) => AccountCard(
+            (acc) => SlideableAccountCard(
               account: acc,
               onTap: () {
                 _showBalanceUpdateDialog(context, ref, acc);
               },
+              onAdjustBalance: () {
+                _showBalanceUpdateDialog(context, ref, acc);
+              },
+              onSetDefault: () {
+                ref.read(accountProvider.notifier).setDefaultAccount(acc.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${acc.name} is now your default wallet'),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+              onDelete: () {
+                _confirmDeleteAccount(context, ref, acc);
+              },
             ),
           ),
 
-          // Tactile Add Account Button
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => _showAddAccountDialog(context, ref),
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: palette.surface,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.4),
-                      width: 1.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(palette.isDark ? 0.2 : 0.04),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add_circle_outline_rounded,
-                          color: palette.textPrimary, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Add Bank Account or MoMo Wallet',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+          const SizedBox(height: 8),
+
+          // Dual Action Area: OCR Card Scanner & Manual Entry
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Row(
+              children: [
+                // Scan Card via OCR Button
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _openCardScanner(context, ref),
+                      borderRadius: BorderRadius.circular(18),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(palette.isDark ? 0.18 : 0.08),
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.4),
+                            width: 1.4,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.document_scanner_rounded,
+                                color: AppColors.primary, size: 18),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Scan Card (OCR)',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(width: 10),
+
+                // Add Manually Button
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _showAddAccountDialog(context, ref),
+                      borderRadius: BorderRadius.circular(18),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        decoration: BoxDecoration(
+                          color: palette.surface,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: palette.border,
+                            width: 1.4,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_rounded,
+                                color: palette.textPrimary, size: 18),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Add Manually',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: palette.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -423,6 +550,77 @@ class AccountsScreen extends ConsumerWidget {
             ),
             child: const Text('Update',
                 style: TextStyle(fontWeight: FontWeight.w500)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openCardScanner(BuildContext context, WidgetRef ref) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => CardScannerModal(
+          onCardScanned: (newAccount) {
+            ref.read(accountProvider.notifier).addAccount(newAccount);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Added ${newAccount.name} via OCR scanner!'),
+                backgroundColor: AppColors.primary,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _confirmDeleteAccount(
+      BuildContext context, WidgetRef ref, Account account) {
+    final palette = context.palette;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: palette.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+          side: BorderSide(color: palette.border, width: 1.5),
+        ),
+        title: Text(
+          'Delete ${account.name}?',
+          style: TextStyle(
+            color: palette.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: Text(
+          'Are you sure you want to remove this wallet? Existing transactions tied to it will remain preserved in your history.',
+          style: TextStyle(
+            color: palette.textSecondary,
+            fontSize: 13,
+            height: 1.4,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text('Cancel', style: TextStyle(color: palette.textMuted)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ref.read(accountProvider.notifier).deleteAccount(account.id);
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('${account.name} deleted')),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.expense,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text('Delete'),
           ),
         ],
       ),

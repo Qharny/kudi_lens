@@ -15,6 +15,22 @@ class AccountNotifier extends StateNotifier<List<Account>> {
       isDefault: true,
     ),
     Account(
+      id: 'acc_gcb',
+      name: 'GCB Bank Savings',
+      provider: 'gcb',
+      maskedNumber: '101*******402',
+      lastBalance: 1420.00,
+      lastBalanceDate: DateTime.now().subtract(const Duration(hours: 6)),
+    ),
+    Account(
+      id: 'acc_ecobank',
+      name: 'Ecobank Current',
+      provider: 'ecobank',
+      maskedNumber: '144*******319',
+      lastBalance: 850.50,
+      lastBalanceDate: DateTime.now().subtract(const Duration(hours: 12)),
+    ),
+    Account(
       id: 'acc_mtn_momo',
       name: 'MTN MoMo Wallet',
       provider: 'mtn_momo',
@@ -47,6 +63,17 @@ class AccountNotifier extends StateNotifier<List<Account>> {
         else
           acc,
     ];
+  }
+
+  void setDefaultAccount(String accountId) {
+    state = [
+      for (final acc in state)
+        acc.copyWith(isDefault: acc.id == accountId),
+    ];
+  }
+
+  void deleteAccount(String accountId) {
+    state = state.where((acc) => acc.id != accountId).toList();
   }
 }
 

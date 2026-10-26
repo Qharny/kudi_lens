@@ -1,12 +1,19 @@
-# Kudi Lens (Pocket Spend)
+<p align="center">
+  <img src="assets/logo.png" width="120" height="120" alt="Kudi Lens Logo" />
+</p>
 
-> An offline-first, privacy-focused expense tracker built with Flutter that reads bank and Mobile Money (MoMo) alerts to tell you where your money actually went.
+<h1 align="center">Kudi Lens (Pocket Spend)</h1>
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](https://flutter.dev)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20(Planned)-3DDC84?logo=android)](https://android.com)
-[![Storage](https://img.shields.io/badge/Storage-Hive%20CE%20(Encrypted)-FFA000)](https://github.com/isar/hive_ce)
-[![State Management](https://img.shields.io/badge/State-Riverpod-0D47A1)](https://riverpod.dev)
-[![License](https://img.shields.io/badge/License-Private-lightgrey.svg)]()
+<p align="center">
+  <em>An offline-first, privacy-focused expense tracker built with Flutter that reads bank and Mobile Money (MoMo) alerts to tell you where your money actually went.</em>
+</p>
+
+<p align="center">
+  <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter" /></a>
+  <a href="https://android.com"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20(Planned)-3DDC84?logo=android" alt="Platform" /></a>
+  <a href="https://github.com/isar/hive_ce"><img src="https://img.shields.io/badge/Storage-Hive%20CE%20(Encrypted)-FFA000" alt="Storage" /></a>
+  <a href="https://riverpod.dev"><img src="https://img.shields.io/badge/State-Riverpod-0D47A1" alt="State Management" /></a>
+</p>
 
 ---
 
@@ -39,12 +46,16 @@ Kudi Lens bridges this gap by automatically listening for financial alerts, stri
 
 ### 2. Automated Bank Alert Tracking (Opt-in)
 - **On-Device Notification Listener:** Employs Android's `NotificationListenerService` to capture alerts locally without requiring risky `READ_SMS` permissions.
-- **Intelligent Template Parsers:** Parses amounts, masked account numbers, dates, locations/terminals, transaction narrations, and post-transaction balances (initial support for CalBank & MTN MoMo).
+- **Intelligent Template Parsers:** Parses amounts, masked account numbers, dates, locations/terminals, transaction narrations, and post-transaction balances across all major Ghanaian commercial banks (GCB, Ecobank, Stanbic, Absa, Fidelity, CalBank, Zenith, Access, Standard Chartered) and mobile money networks (MTN MoMo, Telecel Cash, AT Money).
 - **Multi-Hop Transfer Matching:** Links a bank debit (e.g., bank-to-MoMo pull) with the corresponding MoMo credit, recording it as an internal transfer rather than spending.
 - **Fee Segregation:** Identifies fees (e.g. transfer levies, SMS charges) and tallies them separately so spending totals remain honest.
 - **Duplicate Detection & Balance Reconciliation:** Uses post-transaction balances to differentiate identical repeat charges from true duplicates and detects missed alerts.
 - **On-the-Fly Micro-Prompts:** Sends an interactive local notification prompting the user for one-tap categorization right after a debit arrives.
 - **Self-Learning Categorization Engine:** Learns from user answers over time (matching narrations, MoMo recipients, or patterns) to auto-categorize recurring payments.
+
+### 3. Tactile Card & Wallet Management
+- **Interactive Slide Gestures:** Slide cards left to reveal quick action controls (Quick Adjust Balance, Delete Wallet) or slide right to set as the primary Default Wallet.
+- **On-Device Card OCR Capture:** Camera viewfinder modal with sweeping laser animation and real-time OCR engine that captures payment cards, detects issuer bank BIN (GCB, Ecobank, CalBank, Stanbic, Absa, Fidelity), cardholder name, masked card digits, and expiration date.
 
 ---
 

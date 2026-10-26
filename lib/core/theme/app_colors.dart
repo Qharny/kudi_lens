@@ -43,8 +43,16 @@ class AppColors {
 
   // Provider Brand Accents
   static const Color calBankBlue = Color(0xFF1D4ED8);
+  static const Color gcbGold = Color(0xFFD97706);
+  static const Color ecobankTeal = Color(0xFF0284C7);
+  static const Color stanbicBlue = Color(0xFF2563EB);
+  static const Color absaRed = Color(0xFFBE123C);
+  static const Color fidelityOrange = Color(0xFFEA580C);
+  static const Color zenithRed = Color(0xFFDC2626);
+  static const Color stanchartGreen = Color(0xFF059669);
   static const Color momoYellow = Color(0xFFFFC000);
   static const Color telecelRed = Color(0xFFEF4444);
+  static const Color atMoneyBlue = Color(0xFF1E3A8A);
   static const Color cashGreen = Color(0xFF10B981);
 }
 

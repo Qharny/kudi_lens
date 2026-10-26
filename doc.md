@@ -179,43 +179,73 @@ Alerts usually arrive while the app is closed, when Flutter isn't running. The n
 
 ---
 
-## 7. Alert Format Reference
+## 7. Multi-Bank & Mobile Money Alert Format Reference
 
-### 7.1 CalBank (account debit)
+Kudi Lens supports all major Ghanaian commercial banks and mobile network operators through a modular template engine. Each institution has distinct SMS/notification structures, sender IDs, and narration styles.
 
+### 7.1 GCB Bank Ghana (Ghana Commercial Bank)
 **Sample:**
 ```
-A/C No.: 140*******721 has been debited with GHS 2.00 on 21 OCT 2026 @BNK.
-Info: Transfer Charges. Avail. bal: GHS 268.42. Thank you.
+Acc: 101*******402 debited with GHS 240.00 on 26 OCT 2026. Info: POS CHOP BAR OSU. Avail Bal: GHS 1,180.00.
 ```
+- **Sender ID:** `GCB`, `GCBBank`
+- **Fields:** Account masked (`101*******402`), Direction (`debited`), Amount (`240.00`), Date (`26 OCT 2026`), Info (`POS CHOP BAR OSU`), Avail Bal (`1,180.00`).
 
-| Field | Example | Notes |
-|---|---|---|
-| Account (masked) | 140*******721 | Identifies which account; store only the visible digits |
-| Direction | debited | "debited" or "credited" |
-| Currency | GHS | |
-| Amount | 2.00 | |
-| Date | 21 OCT 2026 | No time; use the notification arrival time |
-| Channel / location | @BNK, Tarkwa | "@BNK" = bank-initiated; a town name = branch/terminal location |
-| Narration ("Info") | Transfer Charges | Main source of classification |
-| Balance after | 268.42 | Used for duplicates and reconciliation |
+### 7.2 Ecobank Ghana
+**Sample:**
+```
+ECOBANK: Dr GHS 95.00 from A/c 144*******319 at TOTAL AIRPORT on 26-OCT-2026. Avail Bal GHS 755.50.
+```
+- **Sender ID:** `Ecobank`, `EcobankGH`
+- **Fields:** Indicator (`Dr` = Debit, `Cr` = Credit), Amount (`95.00`), Account (`144*******319`), Location/Merchant (`TOTAL AIRPORT`), Avail Bal (`755.50`).
 
-**Format quirks to handle:**
-- Double spaces (`2026  Tarkwa`).
-- Double full stops after the narration (`Txn..`).
-- Location is sometimes a channel code (`@BNK`) and sometimes a place name.
+### 7.3 CalBank Ghana
+**Sample:**
+```
+A/C No.: 140*******721 has been debited with GHS 2.00 on 21 OCT 2026 @BNK. Info: Transfer Charges. Avail. bal: GHS 268.42. Thank you.
+```
+- **Sender ID:** `CalBank`
+- **Fields:** Account (`140*******721`), Direction (`debited`), Amount (`2.00`), Date (`21 OCT 2026`), Channel (`@BNK` or city/terminal), Info (`Transfer Charges`), Balance (`268.42`).
 
-### 7.2 MTN MoMo
-*Samples still to be collected:* a merchant payment, a transfer to a person, an airtime purchase, a cash-out, and an incoming transfer from a bank. MoMo messages usually include the recipient's name or merchant, a transaction ID, and fees, which makes them much richer than bank alerts.
+### 7.4 Stanbic Bank Ghana
+**Sample:**
+```
+Stanbic: Debit txn of GHS 150.00 on A/C **5012 on 26/10/2026 14:22. Desc: ACCRA MALL POS. Bal: GHS 3,410.00.
+```
+- **Sender ID:** `Stanbic`, `StanbicGH`
 
-### 7.3 Adding a new bank
-Each bank gets its own template describing:
-- The sender IDs that alerts come from.
-- How to recognise its debit and credit messages.
-- Where each field sits in the message.
-- Its known narration phrases and what they mean.
+### 7.5 Absa Bank Ghana
+**Sample:**
+```
+Absa: A debit of GHS 80.00 occurred on your account ending with 8812 on 26-OCT-2026. Ref: Kfc Junction. Available balance: GHS 1,940.00.
+```
+- **Sender ID:** `Absa`, `AbsaGhana`
 
-Unrecognised alerts that look financial are kept, so new templates can be built from real examples.
+### 7.6 Fidelity Bank Ghana
+**Sample:**
+```
+Fidelity Alert: Acct 209****101 has been debited for GHS 65.00 on 26-OCT-2026. Narration: PHARMACY EAST LEGON. Available Bal: GHS 520.00.
+```
+- **Sender ID:** `Fidelity`, `FidelityBk`
+
+### 7.7 MTN Mobile Money (MoMo)
+**Sample:**
+```
+Payment made for GHS 35.00 to 0551234567. Current Balance: GHS 415.00. Reference: Lunch. Fee was GHS 0.00.
+Cash Out of GHS 100.00 received from Agent 249012. Fee: GHS 1.00. Balance: GHS 314.00.
+```
+- **Sender ID:** `MobileMoney`, `MTN MoMo`
+
+### 7.8 Telecel Cash & AT Money
+- **Telecel Cash Sample:** `You have paid GHS 50.00 to Telecel Merchant 338102. Fee: GHS 0.00. Balance: GHS 280.00.`
+- **AT Money Sample:** `Transfer of GHS 40.00 to 0261234567 successful. New balance: GHS 190.00.`
+
+### 7.9 Modular Multi-Bank Engine Architecture
+Each provider registers a parser specification declaring:
+1. Sender IDs matched (e.g., `GCB`, `Ecobank`, `CalBank`, `Stanbic`, `Absa`, `Fidelity`, `MobileMoney`, `Telecel`).
+2. Regex templates for Debit, Credit, and Balance Enquiries.
+3. Narration phrase dictionary to extract merchant tags, channels, fees, and inter-wallet transfers.
+4. Auto-fallback to "Unrecognised Financial Alerts" for unknown templates so new banks can be trained with zero app store updates.
 
 ---
 
@@ -590,32 +620,33 @@ The positioning: *"Your financial data never leaves your phone."*
 
 ### Phase 1: Foundation
 - Switch to Hive CE with encryption.
-- Extend the Transaction model; add Account model.
+- Extend the Transaction model; add Account model with Ghanaian multi-bank support.
 - Add transaction types (expense, income, fee, transfer, cash).
 
-### Phase 2: CalBank alerts
-- Native notification listener and queue.
-- CalBank parser.
-- Duplicate detection.
-- Fee and transfer classification.
-- "Needs details" inbox and quick-tag notifications.
+### Phase 2: Universal Multi-Bank & Mobile Money Engine
+- Native notification listener service and local SQLite/Hive queue.
+- Modular Ghanaian bank parsers: GCB, Ecobank, CalBank, Stanbic, Absa, Fidelity, Zenith, Access, Stanchart.
+- Mobile Money parsers: MTN MoMo, Telecel Cash, AT Money.
+- Duplicate detection across SMS & in-app push notifications.
+- Automatic fee detection and inter-account transfer classification.
+- "Needs details" inbox and 1-tap quick categorization actions.
 
-### Phase 3: MoMo
-- MTN MoMo parser (merchant payments, transfers, airtime, cash-out).
-- Bank-to-MoMo transfer linking.
-- Summaries split into spending, fees and transfers.
+### Phase 3: Mobile Money & Cross-Bank Reconciliation
+- Deep MoMo parser (merchant payments, transfers, airtime, cash-outs, QR payments).
+- Bank-to-MoMo and MoMo-to-Bank transfer auto-pairing.
+- Balance reconciliation and automated "unaccounted" entry detection.
+- Categorized summaries split into spending, fees, and internal transfers.
 
-### Phase 4: Intelligence
-- Learned rules with confidence and auto-confirm.
-- Balance reconciliation and "unaccounted" entries.
-- Fee-to-transfer linking.
+### Phase 4: Intelligence & Auto-Categorization
+- On-device learned rule engine with confidence scoring and auto-confirm thresholds.
+- Smart fee-to-transfer linking and tax/levy identification.
+- Community and local pattern repository for Ghanaian merchant recognition.
 
-### Phase 5: Expansion
-- More banks (GCB, Ecobank, Fidelity, Stanbic, Absa) and wallets (Telecel Cash, AirtelTigo Money).
-- Receipt capture with on-device OCR.
-- Statement import (PDF/CSV) to backfill and reconcile.
-- Monthly summaries, budgets and alerts.
-- Export (CSV/PDF) and optional encrypted backup.
+### Phase 5: Power User & Analytics
+- Receipt capture with on-device OCR (ML Kit).
+- Multi-bank statement import (PDF/CSV) to backfill history and reconcile past months.
+- Monthly budgets, category caps, and velocity alerts.
+- Encrypted export (CSV/JSON/PDF) and local backup.
 - iOS Shortcuts integration.
 
 ---
@@ -624,7 +655,7 @@ The positioning: *"Your financial data never leaves your phone."*
 
 | Metric | Target |
 |---|---|
-| Alerts parsed successfully | > 95% for supported banks |
+| Alerts parsed successfully | > 95% across all supported Ghanaian banks and wallets |
 | Pending transactions tagged within 24 hours | > 70% |
 | Transactions auto-categorised after 4 weeks of use | > 60% |
 | Duplicate transactions in data | ~0 |
@@ -633,11 +664,10 @@ The positioning: *"Your financial data never leaves your phone."*
 
 ---
 
-## 25. Open Questions
+## 25. Open Questions & Expansion
 
-1. **MoMo formats:** need real masked samples (merchant payment, transfer to a person, airtime, cash-out, incoming bank transfer).
-2. **Which app shows the alert:** does CalBank's alert come through the default SMS app, the CalBank app, or both? This affects sender filtering and duplicates.
-3. **Credit alerts:** how CalBank formats incoming money, for income tracking and transfer matching.
-4. **Naming:** keep *Pocket Spend*, or rename to *SikaTrail* if alert tracking becomes the headline feature?
-5. **Target users:** personal use first, or a public Play Store release from Phase 2? This decides how early the compliance work happens.
-6. **Cash:** should cash withdrawals be broken down further, or left as "Cash (unspecified)"?
+1. **Format Variations:** Collecting real masked samples for all Ghanaian bank credit/debit alerts and MoMo variations (merchant payment, cash-out, airtime, bank pull/push).
+2. **Notification Channels:** Handling dual notifications when both bank SMS and bank mobile banking app notifications fire simultaneously.
+3. **Credit Alerts:** Normalizing incoming payment narrations across banks for income classification and transfer matching.
+4. **Offline Resilience:** Handling notification queue bursts when a phone comes back online after being disconnected.
+5. **Cash Tracking:** User options for breaking down ATM cash withdrawals vs leaving as a lumped cash wallet balance.

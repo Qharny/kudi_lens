@@ -12,9 +12,17 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _autoTrackAlerts = true;
-  bool _trackCalBank = true;
-  bool _trackMtnMomo = true;
-  bool _trackTelecel = false;
+  final Set<String> _trackedProviders = {
+    'calbank',
+    'gcb',
+    'ecobank',
+    'stanbic',
+    'absa',
+    'fidelity',
+    'mtn_momo',
+    'telecel',
+    'at_money',
+  };
 
   void _showBatteryOptimizationDialog(AppPalette palette) {
     showDialog(
@@ -83,33 +91,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           // Section: Supported Providers
           _buildSectionHeader('TRACKED PROVIDERS', palette),
-          CheckboxListTile(
-            title: Text('CalBank Ghana',
-                style: TextStyle(color: palette.textPrimary)),
-            subtitle: Text('SMS & in-app debit notifications',
-                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
-            value: _trackCalBank,
-            activeColor: AppColors.primary,
-            onChanged: (val) => setState(() => _trackCalBank = val ?? false),
-          ),
-          CheckboxListTile(
-            title: Text('MTN Mobile Money (MoMo)',
-                style: TextStyle(color: palette.textPrimary)),
-            subtitle: Text('Merchant payments & pull-transfers',
-                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
-            value: _trackMtnMomo,
-            activeColor: AppColors.primary,
-            onChanged: (val) => setState(() => _trackMtnMomo = val ?? false),
-          ),
-          CheckboxListTile(
-            title: Text('Telecel Cash',
-                style: TextStyle(color: palette.textPrimary)),
-            subtitle: Text('Wallet payments and airtime',
-                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
-            value: _trackTelecel,
-            activeColor: AppColors.primary,
-            onChanged: (val) => setState(() => _trackTelecel = val ?? false),
-          ),
+          _buildProviderToggle('calbank', 'CalBank Ghana', 'Debit alerts & CalPay notifications', palette),
+          _buildProviderToggle('gcb', 'GCB Bank', 'Ghana Commercial Bank SMS & in-app alerts', palette),
+          _buildProviderToggle('ecobank', 'Ecobank Ghana', 'Ecobank debit alerts & OmniLite transactions', palette),
+          _buildProviderToggle('stanbic', 'Stanbic Bank Ghana', 'Stanbic alert notifications & transfers', palette),
+          _buildProviderToggle('absa', 'Absa Bank Ghana', 'Absa debit alerts & digital payments', palette),
+          _buildProviderToggle('fidelity', 'Fidelity Bank Ghana', 'Fidelity smart alerts & POS transactions', palette),
+          _buildProviderToggle('mtn_momo', 'MTN Mobile Money (MoMo)', 'Merchant payments, transfers & cash-outs', palette),
+          _buildProviderToggle('telecel', 'Telecel Cash', 'Wallet payments and airtime purchases', palette),
+          _buildProviderToggle('at_money', 'AT Money (AirtelTigo)', 'AT wallet transactions & cash transfers', palette),
           Divider(indent: 16, endIndent: 16, color: palette.border),
 
           // Section: Intelligence & Rules
@@ -218,6 +208,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+          // About Section with App Logo
+          const SizedBox(height: 16),
+          Center(
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/logo.png',
+                    width: 56,
+                    height: 56,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Kudi Lens',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: palette.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Version 1.0.0 • Offline Bank Alert Tracker',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: palette.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 80),
         ],
       ),
@@ -236,6 +261,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
           color: palette.textMuted,
         ),
       ),
+    );
+  }
+
+  Widget _buildProviderToggle(
+      String providerKey, String title, String subtitle, AppPalette palette) {
+    final isTracked = _trackedProviders.contains(providerKey);
+    return CheckboxListTile(
+      title: Text(title,
+          style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w500)),
+      subtitle: Text(subtitle,
+          style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+      value: isTracked,
+      activeColor: AppColors.primary,
+      onChanged: (val) {
+        setState(() {
+          if (val == true) {
+            _trackedProviders.add(providerKey);
+          } else {
+            _trackedProviders.remove(providerKey);
+          }
+        });
+      },
     );
   }
 }
