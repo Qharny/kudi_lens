@@ -159,7 +159,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                       : 'Record New Spend',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: -0.4,
                     color: palette.textPrimary,
                   ),
@@ -211,7 +211,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                     'GHS',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w500,
                       color: palette.textSecondary,
                       letterSpacing: 0.5,
                     ),
@@ -225,7 +225,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                       autofocus: widget.initialTransaction == null,
                       style: TextStyle(
                         fontSize: 28,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.8,
                         color: palette.textPrimary,
                       ),
@@ -234,7 +234,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         hintStyle: TextStyle(
                           color: palette.textMuted,
                           fontSize: 28,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                         ),
                         border: InputBorder.none,
                         isDense: true,
@@ -252,7 +252,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
               'CATEGORY',
               style: TextStyle(
                 fontSize: 10,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w500,
                 letterSpacing: 0.6,
                 color: palette.textSecondary,
               ),
@@ -295,7 +295,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight:
-                                  isSelected ? FontWeight.w700 : FontWeight.w500,
+                                  isSelected ? FontWeight.w500 : FontWeight.w400,
                               color: isSelected
                                   ? palette.textPrimary
                                   : palette.textSecondary,
@@ -321,7 +321,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         'WALLET / ACCOUNT',
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 0.6,
                           color: palette.textSecondary,
                         ),
@@ -342,7 +342,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                             style: TextStyle(
                               color: palette.textPrimary,
                               fontSize: 13,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                             items: accounts.map((acc) {
                               return DropdownMenuItem<String>(
@@ -374,7 +374,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         'DATE',
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 0.6,
                           color: palette.textSecondary,
                         ),
@@ -412,7 +412,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                                 DateFormatter.formatShortDate(_selectedDate),
                                 style: TextStyle(
                                   fontSize: 13,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   color: palette.textPrimary,
                                 ),
                               ),
@@ -430,7 +430,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
             // Merchant / Recipient input
             TextField(
               controller: _merchantController,
-              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w600),
+              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w400),
               decoration: InputDecoration(
                 labelText: 'Merchant / Recipient (Optional)',
                 labelStyle: TextStyle(color: palette.textSecondary, fontSize: 12),
@@ -451,7 +451,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
             // Note input
             TextField(
               controller: _noteController,
-              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w600),
+              style: TextStyle(color: palette.textPrimary, fontSize: 13, fontWeight: FontWeight.w400),
               decoration: InputDecoration(
                 labelText: 'Personal Note (Optional)',
                 labelStyle: TextStyle(color: palette.textSecondary, fontSize: 12),
@@ -490,7 +490,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                           'ORIGINAL SMS NOTIFICATION',
                           style: TextStyle(
                             fontSize: 10,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w500,
                             letterSpacing: 0.5,
                             color: AppColors.pendingDark,
                           ),
@@ -538,7 +538,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                       : 'Save Transaction',
                   style: const TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: -0.2,
                     color: Colors.white,
                   ),
@@ -576,7 +576,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                 label,
                 style: TextStyle(
                   fontSize: 10,
-                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                   color: isSelected ? Colors.white : context.palette.textSecondary,
                 ),
               ),

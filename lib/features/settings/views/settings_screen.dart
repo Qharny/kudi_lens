@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             secondary: Icon(Icons.notifications_active_rounded,
                 color: palette.textPrimary, size: 24),
             title: Text('Auto-track bank alerts',
-                style: TextStyle(fontWeight: FontWeight.w600, color: palette.textPrimary)),
+                style: TextStyle(fontWeight: FontWeight.w500, color: palette.textPrimary)),
             subtitle: Text(
                 'Read debit/credit notifications via Notification Listener service',
                 style: TextStyle(fontSize: 12, color: palette.textSecondary)),
@@ -162,7 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               'Active',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
                 color: AppColors.income,
               ),
             ),
@@ -231,7 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title,
         style: TextStyle(
           fontSize: 11,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w500,
           letterSpacing: 0.8,
           color: palette.textMuted,
         ),

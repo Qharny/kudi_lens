@@ -51,7 +51,7 @@ class AccountCard extends StatelessWidget {
             'MoMo',
             style: TextStyle(
               fontSize: 10,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w600,
               color: Color(0xFFFFC000),
             ),
           ),
@@ -152,7 +152,7 @@ class AccountCard extends StatelessWidget {
                                   providerLabel,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w600,
                                     letterSpacing: 1.2,
                                     color: textColor,
                                   ),
@@ -174,7 +174,7 @@ class AccountCard extends StatelessWidget {
                                   'DEFAULT',
                                   style: TextStyle(
                                     fontSize: 9,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w500,
                                     letterSpacing: 0.8,
                                     color: textColor,
                                   ),
@@ -189,7 +189,7 @@ class AccountCard extends StatelessWidget {
                           account.name,
                           style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w500,
                             color: textColor,
                           ),
                         ),
@@ -217,7 +217,7 @@ class AccountCard extends StatelessWidget {
                                   'BALANCE',
                                   style: TextStyle(
                                     fontSize: 9,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w500,
                                     letterSpacing: 1.1,
                                     color: textMutedColor,
                                   ),
@@ -227,7 +227,7 @@ class AccountCard extends StatelessWidget {
                                   CurrencyFormatter.format(account.lastBalance),
                                   style: TextStyle(
                                     fontSize: 22,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w600,
                                     letterSpacing: -0.5,
                                     color: textColor,
                                   ),
@@ -256,7 +256,7 @@ class AccountCard extends StatelessWidget {
                                     DateFormatter.formatShortDate(account.lastBalanceDate),
                                     style: TextStyle(
                                       fontSize: 10,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w400,
                                       color: textColor,
                                     ),
                                   ),

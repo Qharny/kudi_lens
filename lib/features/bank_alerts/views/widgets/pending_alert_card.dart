@@ -76,7 +76,7 @@ class PendingAlertCard extends StatelessWidget {
                           providerName,
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                             color: palette.textPrimary,
                           ),
                         ),
@@ -88,7 +88,7 @@ class PendingAlertCard extends StatelessWidget {
                           DateFormatter.formatTime(alert.date),
                           style: TextStyle(
                             fontSize: 11,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                             color: palette.textMuted,
                           ),
                         ),
@@ -116,7 +116,7 @@ class PendingAlertCard extends StatelessWidget {
                       CurrencyFormatter.format(alert.amount),
                       style: TextStyle(
                         fontSize: 26,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.6,
                         color: palette.textPrimary,
                       ),
@@ -126,7 +126,7 @@ class PendingAlertCard extends StatelessWidget {
                       'DEBIT',
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.expense,
                         letterSpacing: 0.4,
                       ),
@@ -163,7 +163,7 @@ class PendingAlertCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 11,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               fontFamily: 'monospace',
                               color: palette.textSecondary,
                             ),
@@ -179,7 +179,7 @@ class PendingAlertCard extends StatelessWidget {
                   'TAP TO CATEGORIZE IN 1-CLICK',
                   style: TextStyle(
                     fontSize: 10,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     letterSpacing: 0.5,
                     color: palette.textSecondary,
                   ),
@@ -263,7 +263,7 @@ class _CartoonQuickButton extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontSize: 11,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: isOutlined ? palette.textPrimary : color,
                 ),
               ),

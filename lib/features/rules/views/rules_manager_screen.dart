@@ -51,7 +51,7 @@ class RulesManagerScreen extends ConsumerWidget {
                             'Matches ${rule.matchType}',
                             style: TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               color: palette.textSecondary,
                             ),
                           ),
@@ -73,7 +73,7 @@ class RulesManagerScreen extends ConsumerWidget {
                         '"${rule.matchValue}"',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: palette.textPrimary,
                           fontFamily: 'monospace',
                         ),
@@ -94,7 +94,7 @@ class RulesManagerScreen extends ConsumerWidget {
                                 category.name,
                                 style: TextStyle(
                                   fontSize: 13,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w400,
                                   color: palette.textPrimary,
                                 ),
                               ),

@@ -27,21 +27,14 @@ class AccountsScreen extends ConsumerWidget {
           ),
           title: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(Icons.account_balance_rounded,
-                    color: AppColors.primary, size: 20),
-              ),
+              Icon(Icons.account_balance_rounded,
+                  color: palette.textPrimary, size: 22),
               const SizedBox(width: 10),
               Text(
                 'Add Wallet / Card',
                 style: TextStyle(
                   color: palette.textPrimary,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                   fontSize: 18,
                 ),
               ),
@@ -136,7 +129,7 @@ class AccountsScreen extends ConsumerWidget {
                 'Cancel',
                 style: TextStyle(
                   color: palette.textMuted,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
@@ -168,7 +161,7 @@ class AccountsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               ),
               child: const Text('Add Account',
-                  style: TextStyle(fontWeight: FontWeight.w800)),
+                  style: TextStyle(fontWeight: FontWeight.w500)),
             ),
           ],
         ),
@@ -187,7 +180,7 @@ class AccountsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Accounts & Wallets',
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
@@ -241,7 +234,7 @@ class AccountsScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 10,
                             letterSpacing: 0.6,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: palette.textSecondary,
                           ),
                         ),
@@ -252,7 +245,7 @@ class AccountsScreen extends ConsumerWidget {
                       CurrencyFormatter.format(totalBalance),
                       style: const TextStyle(
                         fontSize: 26,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.8,
                         color: AppColors.income,
                       ),
@@ -263,7 +256,7 @@ class AccountsScreen extends ConsumerWidget {
                   '${accounts.length} Wallets',
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     color: palette.textSecondary,
                   ),
                 ),
@@ -317,7 +310,7 @@ class AccountsScreen extends ConsumerWidget {
                         'Add Bank Account or MoMo Wallet',
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: AppColors.primary,
                         ),
                       ),
@@ -340,18 +333,10 @@ class AccountsScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.security_rounded,
-                    size: 20,
-                    color: AppColors.primary,
-                  ),
+                Icon(
+                  Icons.security_rounded,
+                  size: 24,
+                  color: palette.textPrimary,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -360,7 +345,7 @@ class AccountsScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 12,
                       color: palette.textSecondary,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w400,
                       height: 1.4,
                     ),
                   ),
@@ -393,7 +378,7 @@ class AccountsScreen extends ConsumerWidget {
           'Adjust ${account.name} Balance',
           style: TextStyle(
             color: palette.textPrimary,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w600,
           ),
         ),
         content: TextField(
@@ -437,7 +422,7 @@ class AccountsScreen extends ConsumerWidget {
               ),
             ),
             child: const Text('Update',
-                style: TextStyle(fontWeight: FontWeight.w800)),
+                style: TextStyle(fontWeight: FontWeight.w500)),
           ),
         ],
       ),

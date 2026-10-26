@@ -55,7 +55,7 @@ class TransactionDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Transaction Details',
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
@@ -85,7 +85,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                     'Delete Transaction?',
                     style: TextStyle(
                       color: palette.textPrimary,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   content: Text(
