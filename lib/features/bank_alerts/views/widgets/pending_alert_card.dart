@@ -76,7 +76,7 @@ class PendingAlertCard extends StatelessWidget {
                           providerName,
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w500,
                             color: palette.textPrimary,
                           ),
                         ),
@@ -116,7 +116,7 @@ class PendingAlertCard extends StatelessWidget {
                       CurrencyFormatter.format(alert.amount),
                       style: TextStyle(
                         fontSize: 26,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: -0.6,
                         color: palette.textPrimary,
                       ),
@@ -126,7 +126,7 @@ class PendingAlertCard extends StatelessWidget {
                       'DEBIT',
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         color: AppColors.expense,
                         letterSpacing: 0.4,
                       ),
@@ -263,7 +263,7 @@ class _CartoonQuickButton extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontSize: 11,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   color: isOutlined ? palette.textPrimary : color,
                 ),
               ),

@@ -89,7 +89,7 @@ class TransactionTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: palette.textPrimary,
                           letterSpacing: -0.2,
                         ),
@@ -108,7 +108,7 @@ class TransactionTile extends StatelessWidget {
                               'Auto',
                               style: TextStyle(
                                 fontSize: 11,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w400,
                                 color: palette.textSecondary,
                               ),
                             ),
@@ -118,7 +118,7 @@ class TransactionTile extends StatelessWidget {
                             DateFormatter.formatTime(transaction.date),
                             style: TextStyle(
                               fontSize: 11,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               color: palette.textMuted,
                             ),
                           ),
@@ -137,7 +137,7 @@ class TransactionTile extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 11,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w400,
                                   color: palette.textSecondary,
                                 ),
                               ),
@@ -159,7 +159,7 @@ class TransactionTile extends StatelessWidget {
                       '$prefix${CurrencyFormatter.format(transaction.amount)}',
                       style: TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w500,
                         letterSpacing: -0.3,
                         color: isIncome
                             ? AppColors.income
@@ -176,7 +176,7 @@ class TransactionTile extends StatelessWidget {
                         'Needs details',
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w400,
                           color: AppColors.pending,
                         ),
                       ),

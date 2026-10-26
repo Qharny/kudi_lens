@@ -49,7 +49,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
               'No expenses recorded for this period',
               style: TextStyle(
                 color: palette.textSecondary,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
                 fontSize: 13,
               ),
             ),
@@ -150,7 +150,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                           fontSize: 9,
                           letterSpacing: 0.5,
                           color: palette.textMuted,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -158,7 +158,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                         CurrencyFormatter.formatCompact(totalSpend),
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w600,
                           letterSpacing: -0.5,
                           color: palette.textPrimary,
                         ),
@@ -218,7 +218,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                               cat.name,
                               style: TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w500,
                                 color: palette.textPrimary,
                               ),
                             ),
@@ -226,7 +226,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                               CurrencyFormatter.format(entry.value),
                               style: TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: -0.3,
                                 color: palette.textPrimary,
                               ),
@@ -278,7 +278,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                       '${percent.toStringAsFixed(0)}%',
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
                         color: cat.color,
                       ),
                     ),

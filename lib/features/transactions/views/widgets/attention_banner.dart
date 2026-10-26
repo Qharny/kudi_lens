@@ -59,7 +59,7 @@ class AttentionBanner extends StatelessWidget {
                         'ACTION NEEDED',
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
                           color: AppColors.pendingDark,
                         ),
@@ -71,7 +71,7 @@ class AttentionBanner extends StatelessWidget {
                             : '$pendingCount Alerts need your details',
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: palette.textPrimary,
                           letterSpacing: -0.2,
                         ),
@@ -81,7 +81,7 @@ class AttentionBanner extends StatelessWidget {
                         'Tap to classify while fresh in mind',
                         style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                           color: palette.textSecondary,
                         ),
                       ),

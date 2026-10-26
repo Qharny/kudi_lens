@@ -193,7 +193,7 @@ class _BalanceCardState extends State<BalanceCard> {
                                       'Wallets',
                                       style: TextStyle(
                                         fontSize: 11,
-                                        fontWeight: FontWeight.w700,
+                                        fontWeight: FontWeight.w500,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -218,7 +218,7 @@ class _BalanceCardState extends State<BalanceCard> {
                       'AVAILABLE BALANCE',
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
                         letterSpacing: 1.2,
                         color: Colors.white.withOpacity(0.75),
                       ),
@@ -230,7 +230,7 @@ class _BalanceCardState extends State<BalanceCard> {
                           : CurrencyFormatter.format(widget.totalBalance),
                       style: const TextStyle(
                         fontSize: 32,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.8,
                         color: Colors.white,
                         shadows: [
@@ -250,7 +250,7 @@ class _BalanceCardState extends State<BalanceCard> {
                       style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'monospace',
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
                         letterSpacing: 2.5,
                         color: Colors.white.withOpacity(0.85),
                         shadows: const [
@@ -282,24 +282,17 @@ class _BalanceCardState extends State<BalanceCard> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(3),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF43F5E), // Cartoon Coral
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.arrow_downward_rounded,
-                                  size: 11,
-                                  color: Colors.white,
-                                ),
+                              const Icon(
+                                Icons.arrow_downward_rounded,
+                                size: 13,
+                                color: Colors.white,
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: 5),
                               Text(
                                 "Today: ${_hideBalance ? '••••' : CurrencyFormatter.formatCompact(widget.todaySpending)}",
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w500,
                                   color: Colors.white,
                                 ),
                               ),
@@ -451,7 +444,7 @@ class _BalanceCardState extends State<BalanceCard> {
           'KUDI',
           style: TextStyle(
             fontSize: 13,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w600,
             letterSpacing: 1.1,
             color: Colors.white,
             fontStyle: FontStyle.italic,

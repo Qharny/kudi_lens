@@ -42,7 +42,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
       appBar: AppBar(
         title: const Text(
           'Analytics & Summaries',
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: SingleChildScrollView(
@@ -159,7 +159,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                         'Metrics exclude $pendingCount unfiled alerts awaiting your classification.',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: palette.textPrimary,
                         ),
                       ),
@@ -181,7 +181,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                   'Spending by Category',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                     color: palette.textPrimary,
                   ),
@@ -216,7 +216,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             label,
             style: TextStyle(
               fontSize: 11,
-              fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               color: isSelected ? Colors.white : palette.textSecondary,
             ),
           ),
@@ -261,7 +261,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 tagText,
                 style: TextStyle(
                   fontSize: 10,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w400,
                   color: palette.textSecondary,
                 ),
               ),
@@ -272,7 +272,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             title,
             style: TextStyle(
               fontSize: 11,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               color: palette.textSecondary,
             ),
           ),
@@ -281,7 +281,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             CurrencyFormatter.format(amount),
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
               letterSpacing: -0.4,
               color: palette.textPrimary,
             ),

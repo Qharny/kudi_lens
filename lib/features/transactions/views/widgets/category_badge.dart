@@ -31,7 +31,7 @@ class CategoryBadge extends StatelessWidget {
           category.name,
           style: TextStyle(
             fontSize: compact ? 11 : 13,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w400,
             color: textColor,
           ),
         ),

@@ -241,7 +241,7 @@ class AccountsScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 10,
                             letterSpacing: 0.6,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                             color: palette.textSecondary,
                           ),
                         ),
@@ -252,7 +252,7 @@ class AccountsScreen extends ConsumerWidget {
                       CurrencyFormatter.format(totalBalance),
                       style: const TextStyle(
                         fontSize: 26,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: -0.8,
                         color: AppColors.income,
                       ),
@@ -263,7 +263,7 @@ class AccountsScreen extends ConsumerWidget {
                   '${accounts.length} Wallets',
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     color: palette.textSecondary,
                   ),
                 ),
@@ -317,7 +317,7 @@ class AccountsScreen extends ConsumerWidget {
                         'Add Bank Account or MoMo Wallet',
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w600,
                           color: AppColors.primary,
                         ),
                       ),

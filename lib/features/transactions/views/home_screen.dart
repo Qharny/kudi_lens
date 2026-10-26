@@ -49,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
                       'Kudi Lens',
                       style: TextStyle(
                         fontSize: 17,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.4,
                         color: palette.textPrimary,
                       ),
@@ -59,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
                       '• OFFLINE',
                       style: TextStyle(
                         fontSize: 10,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w400,
                         color: palette.textMuted,
                         letterSpacing: 0.4,
                       ),
@@ -70,7 +70,7 @@ class HomeScreen extends ConsumerWidget {
                   'Pocket Spend Tracker',
                   style: TextStyle(
                     fontSize: 11,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     color: palette.textSecondary,
                   ),
                 ),
@@ -150,24 +150,17 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.receipt_long_rounded,
-                          size: 15,
-                          color: AppColors.primary,
-                        ),
+                      Icon(
+                        Icons.receipt_long_rounded,
+                        size: 20,
+                        color: palette.textPrimary,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Recent Activity',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                           letterSpacing: -0.3,
                           color: palette.textPrimary,
                         ),
@@ -185,7 +178,7 @@ class HomeScreen extends ConsumerWidget {
                       '${transactions.length} items',
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                         color: palette.textSecondary,
                       ),
                     ),
@@ -225,7 +218,7 @@ class HomeScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16,
                           color: palette.textPrimary,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -303,7 +296,7 @@ class HomeScreen extends ConsumerWidget {
               Text(
                 'Record Spend',
                 style: TextStyle(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w500,
                   fontSize: 13,
                   color: Colors.white,
                 ),

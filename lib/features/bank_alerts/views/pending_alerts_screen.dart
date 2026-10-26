@@ -21,7 +21,7 @@ class PendingAlertsScreen extends ConsumerWidget {
           children: [
             const Text(
               'Needs Details',
-              style: TextStyle(fontWeight: FontWeight.w800),
+              style: TextStyle(fontWeight: FontWeight.w700),
             ),
             const SizedBox(width: 8),
             if (pendingAlerts.isNotEmpty)
@@ -29,7 +29,7 @@ class PendingAlertsScreen extends ConsumerWidget {
                 '(${pendingAlerts.length})',
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   color: palette.textSecondary,
                 ),
               ),
@@ -53,7 +53,7 @@ class PendingAlertsScreen extends ConsumerWidget {
                       'All Caught Up!',
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: -0.4,
                         color: palette.textPrimary,
                       ),

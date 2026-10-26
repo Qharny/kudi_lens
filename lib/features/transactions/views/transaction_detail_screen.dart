@@ -112,7 +112,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                         'Delete',
                         style: TextStyle(
                           color: AppColors.expense,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -179,7 +179,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                             tx.type.displayName.toUpperCase(),
                             style: TextStyle(
                               fontSize: 10,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w500,
                               letterSpacing: 0.8,
                               color: primaryColor,
                             ),
@@ -210,7 +210,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                             CurrencyFormatter.format(tx.amount),
                             style: TextStyle(
                               fontSize: 34,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w600,
                               letterSpacing: -1,
                               color: palette.textPrimary,
                             ),
@@ -227,7 +227,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                                 '• ${tx.source.displayName}',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w500,
                                   color: palette.textSecondary,
                                 ),
                               ),
@@ -337,7 +337,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                             'Linked Transfer Leg',
                             style: TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w500,
                               color: AppColors.transfer,
                             ),
                           ),
@@ -385,7 +385,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                               'ORIGINAL BANK ALERT AUDIT TRAIL',
                               style: TextStyle(
                                 fontSize: 10,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0.5,
                                 color: AppColors.primary,
                               ),
@@ -411,7 +411,7 @@ class TransactionDetailScreen extends ConsumerWidget {
                                 'Copy',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w400,
                                   color: palette.textPrimary,
                                 ),
                               ),
@@ -459,7 +459,7 @@ class TransactionDetailScreen extends ConsumerWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               color: palette.textSecondary,
             ),
           ),
@@ -470,7 +470,7 @@ class TransactionDetailScreen extends ConsumerWidget {
               textAlign: TextAlign.end,
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w500,
                 color: valueColor ?? palette.textPrimary,
               ),
             ),
