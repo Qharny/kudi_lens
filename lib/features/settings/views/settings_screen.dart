@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../bank_alerts/views/unrecognised_alerts_screen.dart';
+import '../../onboarding/views/onboarding_screen.dart';
 import '../../rules/views/rules_manager_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -134,6 +135,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => const UnrecognisedAlertsScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.explore_outlined, color: palette.textPrimary),
+            title: Text('App Tour & Onboarding',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Revisit the feature guide & privacy walkthrough',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+            trailing: Icon(Icons.chevron_right_rounded,
+                color: palette.textMuted),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const OnboardingScreen(),
                 ),
               );
             },

@@ -57,6 +57,11 @@ Kudi Lens bridges this gap by automatically listening for financial alerts, stri
 - **Interactive Slide Gestures:** Slide cards left to reveal quick action controls (Quick Adjust Balance, Delete Wallet) or slide right to set as the primary Default Wallet.
 - **On-Device Card OCR Capture:** Camera viewfinder modal with sweeping laser animation and real-time OCR engine that captures payment cards, detects issuer bank BIN (GCB, Ecobank, CalBank, Stanbic, Absa, Fidelity), cardholder name, masked card digits, and expiration date.
 
+### 4. Splash & Onboarding Experience
+- **Branded Animated Splash:** Animated entry featuring the official Kudi Lens logo, security tagline, and intelligent initial routing.
+- **First-Run Onboarding Carousel:** 3-step interactive walkthrough detailing automated bank alert tracking, 100% offline AES-256 storage, and camera OCR wallet additions.
+- **Persistent Preferences:** Powered by `shared_preferences` to remember tour completion, plus a *"App Tour & Onboarding"* action in Settings to replay anytime.
+
 ---
 
 ## 🔄 How Alert Processing Works
