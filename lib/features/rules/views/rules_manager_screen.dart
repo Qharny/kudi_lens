@@ -10,18 +10,19 @@ class RulesManagerScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final rules = ref.watch(rulesProvider);
+    final palette = context.palette;
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Learned Categorization Rules'),
       ),
       body: rules.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 'No learned rules yet.\nRules are created as you categorize alerts.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textSecondaryDark),
+                style: TextStyle(color: palette.textSecondary),
               ),
             )
           : ListView.builder(
@@ -36,9 +37,9 @@ class RulesManagerScreen extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceDark,
+                    color: palette.surface,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.cardBorderDark),
+                    border: Border.all(color: palette.border),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +51,7 @@ class RulesManagerScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.15),
+                              color: AppColors.primary.withOpacity(0.12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -58,13 +59,13 @@ class RulesManagerScreen extends ConsumerWidget {
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.primaryLight,
+                                color: AppColors.primary,
                               ),
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete_outline_rounded,
-                                size: 18, color: AppColors.textMutedDark),
+                            icon: Icon(Icons.delete_outline_rounded,
+                                size: 18, color: palette.textMuted),
                             onPressed: () {
                               ref
                                   .read(rulesProvider.notifier)
@@ -78,24 +79,24 @@ class RulesManagerScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         '"${rule.matchValue}"',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimaryDark,
+                          color: palette.textPrimary,
                           fontFamily: 'monospace',
                         ),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Icon(Icons.arrow_forward_rounded,
-                              size: 14, color: AppColors.textMutedDark),
+                          Icon(Icons.arrow_forward_rounded,
+                              size: 14, color: palette.textMuted),
                           const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: category.color.withOpacity(0.15),
+                              color: category.color.withOpacity(0.12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
@@ -118,24 +119,24 @@ class RulesManagerScreen extends ConsumerWidget {
                           const Spacer(),
                           Text(
                             '${rule.confirmations} confirmations',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.textMutedDark,
+                              color: palette.textMuted,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const Divider(height: 1),
+                      Divider(height: 1, color: palette.border),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Auto-confirm without asking',
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.textSecondaryDark,
+                              color: palette.textSecondary,
                             ),
                           ),
                           Switch(

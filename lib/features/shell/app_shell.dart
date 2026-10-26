@@ -40,10 +40,10 @@ class _AppShellState extends ConsumerState<AppShell> {
         children: screens,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: AppColors.cardBorderDark,
+              color: context.palette.border,
               width: 1,
             ),
           ),
@@ -51,9 +51,9 @@ class _AppShellState extends ConsumerState<AppShell> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
-          backgroundColor: AppColors.surfaceDark,
+          backgroundColor: context.palette.surface,
           selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.textMutedDark,
+          unselectedItemColor: context.palette.textMuted,
           type: BottomNavigationBarType.fixed,
           selectedLabelStyle: const TextStyle(
             fontSize: 12,

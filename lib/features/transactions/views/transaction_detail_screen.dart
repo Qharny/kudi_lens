@@ -32,7 +32,6 @@ class TransactionDetailScreen extends ConsumerWidget {
     }
 
     final tx = txList.first;
-
     final accounts = ref.watch(accountProvider);
     final account = accounts.where((a) => a.id == tx.accountId).firstOrNull;
     final category = CategoryItem.findByName(tx.category);
@@ -40,9 +39,10 @@ class TransactionDetailScreen extends ConsumerWidget {
     final isIncome = tx.type == TransactionType.income;
     final isFee = tx.type == TransactionType.fee;
     final isTransfer = tx.type == TransactionType.transfer;
+    final palette = context.palette;
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Transaction Details'),
         actions: [
@@ -64,11 +64,11 @@ class TransactionDetailScreen extends ConsumerWidget {
               showDialog(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  backgroundColor: AppColors.surfaceDark,
+                  backgroundColor: palette.surface,
                   title: const Text('Delete Transaction?'),
-                  content: const Text(
+                  content: Text(
                     'Are you sure you want to remove this transaction record?',
-                    style: TextStyle(color: AppColors.textSecondaryDark),
+                    style: TextStyle(color: palette.textSecondary),
                   ),
                   actions: [
                     TextButton(
@@ -102,9 +102,9 @@ class TransactionDetailScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.surfaceDark,
+                color: palette.surface,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.cardBorderDark),
+                border: Border.all(color: palette.border),
               ),
               child: Column(
                 children: [
@@ -112,12 +112,12 @@ class TransactionDetailScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isFee
-                          ? AppColors.fee.withOpacity(0.15)
+                          ? AppColors.fee.withOpacity(0.12)
                           : isTransfer
-                              ? AppColors.transfer.withOpacity(0.15)
+                              ? AppColors.transfer.withOpacity(0.12)
                               : isIncome
-                                  ? AppColors.income.withOpacity(0.15)
-                                  : category.color.withOpacity(0.15),
+                                  ? AppColors.income.withOpacity(0.12)
+                                  : category.color.withOpacity(0.12),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -141,11 +141,11 @@ class TransactionDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 14),
                   Text(
                     CurrencyFormatter.format(tx.amount),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.5,
-                      color: AppColors.textPrimaryDark,
+                      color: palette.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -159,13 +159,13 @@ class TransactionDetailScreen extends ConsumerWidget {
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: tx.source == TransactionSource.bankAlert
-                              ? AppColors.primary.withOpacity(0.15)
-                              : AppColors.cardDark,
+                              ? AppColors.primary.withOpacity(0.12)
+                              : palette.card,
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
                             color: tx.source == TransactionSource.bankAlert
                                 ? AppColors.primary.withOpacity(0.3)
-                                : AppColors.cardBorderDark,
+                                : palette.border,
                           ),
                         ),
                         child: Text(
@@ -174,8 +174,8 @@ class TransactionDetailScreen extends ConsumerWidget {
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: tx.source == TransactionSource.bankAlert
-                                ? AppColors.primaryLight
-                                : AppColors.textSecondaryDark,
+                                ? AppColors.primary
+                                : palette.textSecondary,
                           ),
                         ),
                       ),
@@ -189,19 +189,21 @@ class TransactionDetailScreen extends ConsumerWidget {
             // Metadata card
             Container(
               decoration: BoxDecoration(
-                color: AppColors.surfaceDark,
+                color: palette.surface,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.cardBorderDark),
+                border: Border.all(color: palette.border),
               ),
               child: Column(
                 children: [
                   _buildPropertyRow(
+                    palette: palette,
                     icon: Icons.calendar_today_rounded,
                     label: 'Date & Time',
                     value: DateFormatter.formatFull(tx.date),
                   ),
-                  const Divider(height: 1, indent: 50),
+                  Divider(height: 1, indent: 50, color: palette.border),
                   _buildPropertyRow(
+                    palette: palette,
                     icon: Icons.account_balance_wallet_rounded,
                     label: 'Account',
                     value: account != null
@@ -209,33 +211,37 @@ class TransactionDetailScreen extends ConsumerWidget {
                         : 'Unassigned',
                   ),
                   if (tx.merchant != null) ...[
-                    const Divider(height: 1, indent: 50),
+                    Divider(height: 1, indent: 50, color: palette.border),
                     _buildPropertyRow(
+                      palette: palette,
                       icon: Icons.storefront_rounded,
                       label: 'Merchant / Recipient',
                       value: tx.merchant!,
                     ),
                   ],
                   if (tx.location != null) ...[
-                    const Divider(height: 1, indent: 50),
+                    Divider(height: 1, indent: 50, color: palette.border),
                     _buildPropertyRow(
+                      palette: palette,
                       icon: Icons.location_on_outlined,
                       label: 'Location / Terminal',
                       value: tx.location!,
                     ),
                   ],
                   if (tx.balanceAfter != null) ...[
-                    const Divider(height: 1, indent: 50),
+                    Divider(height: 1, indent: 50, color: palette.border),
                     _buildPropertyRow(
+                      palette: palette,
                       icon: Icons.account_balance_rounded,
                       label: 'Balance After',
                       value: CurrencyFormatter.format(tx.balanceAfter!),
-                      valueColor: AppColors.primaryLight,
+                      valueColor: AppColors.primary,
                     ),
                   ],
                   if (tx.note != null && tx.note!.isNotEmpty) ...[
-                    const Divider(height: 1, indent: 50),
+                    Divider(height: 1, indent: 50, color: palette.border),
                     _buildPropertyRow(
+                      palette: palette,
                       icon: Icons.notes_rounded,
                       label: 'Note',
                       value: tx.note!,
@@ -251,25 +257,25 @@ class TransactionDetailScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.transfer.withOpacity(0.1),
+                  color: AppColors.transfer.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: AppColors.transfer.withOpacity(0.3),
+                    color: AppColors.transfer.withOpacity(0.25),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.link_rounded,
                       color: AppColors.transfer,
                       size: 20,
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Linked Transfer Leg',
                             style: TextStyle(
                               fontSize: 13,
@@ -277,12 +283,12 @@ class TransactionDetailScreen extends ConsumerWidget {
                               color: AppColors.transfer,
                             ),
                           ),
-                          SizedBox(height: 2),
+                          const SizedBox(height: 2),
                           Text(
                             'Matched with internal wallet transfer. Excluded from spending total.',
                             style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.textSecondaryDark,
+                              color: palette.textSecondary,
                             ),
                           ),
                         ],
@@ -296,28 +302,28 @@ class TransactionDetailScreen extends ConsumerWidget {
             // Raw Alert Message (Audit Trail)
             if (tx.rawMessage != null) ...[
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Original Bank Alert',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimaryDark,
+                  color: palette.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.bgDark,
+                  color: palette.card,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.cardBorderDark),
+                  border: Border.all(color: palette.border),
                 ),
                 child: Text(
                   tx.rawMessage!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'monospace',
                     fontSize: 12,
-                    color: AppColors.textSecondaryDark,
+                    color: palette.textSecondary,
                     height: 1.5,
                   ),
                 ),
@@ -330,6 +336,7 @@ class TransactionDetailScreen extends ConsumerWidget {
   }
 
   Widget _buildPropertyRow({
+    required AppPalette palette,
     required IconData icon,
     required String label,
     required String value,
@@ -339,13 +346,13 @@ class TransactionDetailScreen extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: AppColors.textMutedDark),
+          Icon(icon, size: 20, color: palette.textMuted),
           const SizedBox(width: 14),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: AppColors.textSecondaryDark,
+              color: palette.textSecondary,
             ),
           ),
           const Spacer(),
@@ -356,7 +363,7 @@ class TransactionDetailScreen extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: valueColor ?? AppColors.textPrimaryDark,
+                color: valueColor ?? palette.textPrimary,
               ),
             ),
           ),

@@ -28,24 +28,24 @@ class HomeScreen extends ConsumerWidget {
     final pendingCount = ref.watch(pendingAlertsCountProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: context.palette.bg,
       appBar: AppBar(
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.2),
+                color: AppColors.primary.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
                 Icons.account_balance_wallet_rounded,
-                color: AppColors.primaryLight,
+                color: AppColors.primary,
                 size: 20,
               ),
             ),
             const SizedBox(width: 10),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -54,6 +54,7 @@ class HomeScreen extends ConsumerWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
+                    color: context.palette.textPrimary,
                   ),
                 ),
                 Text(
@@ -61,7 +62,7 @@ class HomeScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.textSecondaryDark,
+                    color: context.palette.textSecondary,
                   ),
                 ),
               ],
@@ -145,19 +146,19 @@ class HomeScreen extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Recent Transactions',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimaryDark,
+                      color: context.palette.textPrimary,
                     ),
                   ),
                   Text(
                     '${transactions.length} items',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textMutedDark,
+                      color: context.palette.textMuted,
                     ),
                   ),
                 ],
@@ -167,7 +168,7 @@ class HomeScreen extends ConsumerWidget {
 
           // Transactions List or Empty State
           if (transactions.isEmpty)
-            const SliverFillRemaining(
+            SliverFillRemaining(
               hasScrollBody: false,
               child: Center(
                 child: Column(
@@ -176,23 +177,23 @@ class HomeScreen extends ConsumerWidget {
                     Icon(
                       Icons.receipt_long_outlined,
                       size: 48,
-                      color: AppColors.textMutedDark,
+                      color: context.palette.textMuted,
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Text(
                       'No transactions yet',
                       style: TextStyle(
                         fontSize: 16,
-                        color: AppColors.textSecondaryDark,
+                        color: context.palette.textSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       'Tap + to record your first expense or income',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textMutedDark,
+                        color: context.palette.textMuted,
                       ),
                     ),
                   ],

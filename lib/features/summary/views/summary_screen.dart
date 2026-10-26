@@ -24,6 +24,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     final totalIncome = ref.watch(totalIncomeProvider);
     final periodSpend = ref.watch(periodSpendingProvider(_selectedDays));
     final pendingCount = ref.watch(pendingAlertsCountProvider);
+    final palette = context.palette;
 
     final filteredTxs = transactions.where((tx) {
       if (_selectedDays == 1) {
@@ -37,7 +38,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Analytics & Summaries'),
       ),
@@ -50,14 +51,14 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppColors.cardDark,
+                color: palette.card,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  _buildPeriodPill(1, 'Today'),
-                  _buildPeriodPill(7, 'Past 7 Days'),
-                  _buildPeriodPill(30, 'Past 30 Days'),
+                  _buildPeriodPill(1, 'Today', palette),
+                  _buildPeriodPill(7, 'Past 7 Days', palette),
+                  _buildPeriodPill(30, 'Past 30 Days', palette),
                 ],
               ),
             ),
@@ -68,6 +69,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               children: [
                 Expanded(
                   child: _buildMetricTile(
+                    palette: palette,
                     title: 'Net Spending',
                     amount: periodSpend,
                     accentColor: AppColors.expense,
@@ -77,6 +79,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildMetricTile(
+                    palette: palette,
                     title: 'Total Income',
                     amount: totalIncome,
                     accentColor: AppColors.income,
@@ -90,6 +93,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               children: [
                 Expanded(
                   child: _buildMetricTile(
+                    palette: palette,
                     title: 'Bank Fees',
                     amount: totalFees,
                     accentColor: AppColors.fee,
@@ -100,6 +104,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildMetricTile(
+                    palette: palette,
                     title: 'Wallet Transfers',
                     amount: totalTransfers,
                     accentColor: AppColors.transfer,
@@ -132,9 +137,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                     Expanded(
                       child: Text(
                         'Totals exclude $pendingCount pending bank alerts awaiting classification.',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondaryDark,
+                          color: palette.textSecondary,
                         ),
                       ),
                     ),
@@ -143,12 +148,12 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               ),
 
             // Spending Breakdown Heading
-            const Text(
+            Text(
               'Spending by Category',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textPrimaryDark,
+                color: palette.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -163,7 +168,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     );
   }
 
-  Widget _buildPeriodPill(int days, String label) {
+  Widget _buildPeriodPill(int days, String label, AppPalette palette) {
     final isSelected = _selectedDays == days;
     return Expanded(
       child: GestureDetector(
@@ -180,7 +185,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? Colors.white : AppColors.textSecondaryDark,
+              color: isSelected ? Colors.white : palette.textSecondary,
             ),
           ),
         ),
@@ -189,6 +194,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
   }
 
   Widget _buildMetricTile({
+    required AppPalette palette,
     required String title,
     required double amount,
     required Color accentColor,
@@ -198,9 +204,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surfaceDark,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.cardBorderDark),
+        border: Border.all(color: palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +216,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.15),
+                  color: accentColor.withOpacity(0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, size: 14, color: accentColor),
@@ -218,10 +224,10 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               const SizedBox(width: 6),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.textSecondaryDark,
+                  color: palette.textSecondary,
                 ),
               ),
             ],
@@ -229,19 +235,19 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
           const SizedBox(height: 8),
           Text(
             CurrencyFormatter.format(amount),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimaryDark,
+              color: palette.textPrimary,
             ),
           ),
           if (subtitle != null) ...[
             const SizedBox(height: 2),
             Text(
               subtitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 10,
-                color: AppColors.textMutedDark,
+                color: palette.textMuted,
               ),
             ),
           ],

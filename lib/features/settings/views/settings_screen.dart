@@ -16,16 +16,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _trackMtnMomo = true;
   bool _trackTelecel = false;
 
-  void _showBatteryOptimizationDialog() {
+  void _showBatteryOptimizationDialog(AppPalette palette) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.surfaceDark,
-        title: const Text('Background Battery Exemption'),
-        content: const Text(
+        backgroundColor: palette.surface,
+        title: Text(
+          'Background Battery Exemption',
+          style: TextStyle(color: palette.textPrimary),
+        ),
+        content: Text(
           'To ensure bank alerts are received without delay, please exempt Kudi Lens from battery optimization in your device settings.\n\nRecommended for Samsung, Tecno, Infinix, and Xiaomi devices.',
           style: TextStyle(
-            color: AppColors.textSecondaryDark,
+            color: palette.textSecondary,
             height: 1.4,
           ),
         ),
@@ -41,8 +44,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Settings'),
       ),
@@ -50,76 +55,81 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         children: [
           // Section: Alert Tracking
-          _buildSectionHeader('AUTOMATED BANK ALERT TRACKING'),
+          _buildSectionHeader('AUTOMATED BANK ALERT TRACKING', palette),
           SwitchListTile(
             secondary: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.15),
+                color: AppColors.primary.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(Icons.notifications_active_rounded,
-                  color: AppColors.primaryLight, size: 20),
+                  color: AppColors.primary, size: 20),
             ),
-            title: const Text('Auto-track bank alerts',
-                style: TextStyle(fontWeight: FontWeight.w600)),
-            subtitle: const Text(
+            title: Text('Auto-track bank alerts',
+                style: TextStyle(fontWeight: FontWeight.w600, color: palette.textPrimary)),
+            subtitle: Text(
                 'Read debit/credit notifications via Notification Listener service',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             value: _autoTrackAlerts,
             activeColor: AppColors.primary,
             onChanged: (val) => setState(() => _autoTrackAlerts = val),
           ),
           ListTile(
-            leading: const Icon(Icons.battery_charging_full_rounded,
-                color: AppColors.textSecondaryDark),
-            title: const Text('Battery Optimization Guide'),
-            subtitle: const Text('Ensure background listener stays alive',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
-            trailing: const Icon(Icons.chevron_right_rounded,
-                color: AppColors.textMutedDark),
-            onTap: _showBatteryOptimizationDialog,
+            leading: Icon(Icons.battery_charging_full_rounded,
+                color: palette.textSecondary),
+            title: Text('Battery Optimization Guide',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Ensure background listener stays alive',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+            trailing: Icon(Icons.chevron_right_rounded,
+                color: palette.textMuted),
+            onTap: () => _showBatteryOptimizationDialog(palette),
           ),
-          const Divider(indent: 16, endIndent: 16),
+          Divider(indent: 16, endIndent: 16, color: palette.border),
 
           // Section: Supported Providers
-          _buildSectionHeader('TRACKED PROVIDERS'),
+          _buildSectionHeader('TRACKED PROVIDERS', palette),
           CheckboxListTile(
-            title: const Text('CalBank Ghana'),
-            subtitle: const Text('SMS & in-app debit notifications',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            title: Text('CalBank Ghana',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('SMS & in-app debit notifications',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             value: _trackCalBank,
             activeColor: AppColors.primary,
             onChanged: (val) => setState(() => _trackCalBank = val ?? false),
           ),
           CheckboxListTile(
-            title: const Text('MTN Mobile Money (MoMo)'),
-            subtitle: const Text('Merchant payments & pull-transfers',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            title: Text('MTN Mobile Money (MoMo)',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Merchant payments & pull-transfers',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             value: _trackMtnMomo,
             activeColor: AppColors.primary,
             onChanged: (val) => setState(() => _trackMtnMomo = val ?? false),
           ),
           CheckboxListTile(
-            title: const Text('Telecel Cash'),
-            subtitle: const Text('Wallet payments and airtime',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            title: Text('Telecel Cash',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Wallet payments and airtime',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             value: _trackTelecel,
             activeColor: AppColors.primary,
             onChanged: (val) => setState(() => _trackTelecel = val ?? false),
           ),
-          const Divider(indent: 16, endIndent: 16),
+          Divider(indent: 16, endIndent: 16, color: palette.border),
 
           // Section: Intelligence & Rules
-          _buildSectionHeader('INTELLIGENCE & PARSING'),
+          _buildSectionHeader('INTELLIGENCE & PARSING', palette),
           ListTile(
             leading: const Icon(Icons.psychology_rounded,
-                color: AppColors.primaryLight),
-            title: const Text('Learned Categorization Rules'),
-            subtitle: const Text('Review patterns the app learned from you',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
-            trailing: const Icon(Icons.chevron_right_rounded,
-                color: AppColors.textMutedDark),
+                color: AppColors.primary),
+            title: Text('Learned Categorization Rules',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Review patterns the app learned from you',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+            trailing: Icon(Icons.chevron_right_rounded,
+                color: palette.textMuted),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -131,11 +141,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.mark_email_unread_rounded,
                 color: AppColors.pending),
-            title: const Text('Unrecognised Alerts'),
-            subtitle: const Text('View financial alerts that didn\'t match templates',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
-            trailing: const Icon(Icons.chevron_right_rounded,
-                color: AppColors.textMutedDark),
+            title: Text('Unrecognised Alerts',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('View financial alerts that didn\'t match templates',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+            trailing: Icon(Icons.chevron_right_rounded,
+                color: palette.textMuted),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -144,19 +155,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
-          const Divider(indent: 16, endIndent: 16),
+          Divider(indent: 16, endIndent: 16, color: palette.border),
 
           // Section: Privacy & Security
-          _buildSectionHeader('SECURITY & DATA PRIVACY'),
+          _buildSectionHeader('SECURITY & DATA PRIVACY', palette),
           ListTile(
             leading: const Icon(Icons.lock_rounded, color: AppColors.income),
-            title: const Text('On-Device Encryption'),
-            subtitle: const Text('AES-256 encrypted storage via Hive CE & Keystore',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            title: Text('On-Device Encryption',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('AES-256 encrypted storage via Hive CE & Keystore',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: AppColors.income.withOpacity(0.15),
+                color: AppColors.income.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: const Text(
@@ -170,11 +182,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.file_download_outlined,
-                color: AppColors.textSecondaryDark),
-            title: const Text('Export Data'),
-            subtitle: const Text('Download transactions as CSV / JSON',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            leading: Icon(Icons.file_download_outlined,
+                color: palette.textSecondary),
+            title: Text('Export Data',
+                style: TextStyle(color: palette.textPrimary)),
+            subtitle: Text('Download transactions as CSV / JSON',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Exporting transactions as CSV...')),
@@ -186,17 +199,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: AppColors.expense),
             title: const Text('Wipe All Local Data',
                 style: TextStyle(color: AppColors.expense)),
-            subtitle: const Text('Erase all stored transactions, rules, and accounts',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondaryDark)),
+            subtitle: Text('Erase all stored transactions, rules, and accounts',
+                style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  backgroundColor: AppColors.surfaceDark,
-                  title: const Text('Erase All Data?'),
-                  content: const Text(
+                  backgroundColor: palette.surface,
+                  title: Text('Erase All Data?',
+                      style: TextStyle(color: palette.textPrimary)),
+                  content: Text(
                     'This action will permanently delete all transaction records and learned rules. It cannot be undone.',
-                    style: TextStyle(color: AppColors.textSecondaryDark),
+                    style: TextStyle(color: palette.textSecondary),
                   ),
                   actions: [
                     TextButton(
@@ -224,16 +238,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title, AppPalette palette) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
-          color: AppColors.textMutedDark,
+          color: palette.textMuted,
         ),
       ),
     );

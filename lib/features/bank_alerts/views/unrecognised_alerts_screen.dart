@@ -7,7 +7,8 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample unrecognised alerts for template authoring/debugging
+    final palette = context.palette;
+
     final samples = [
       {
         'sender': 'FidelityBank',
@@ -24,7 +25,7 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Unrecognised Alerts'),
       ),
@@ -36,19 +37,19 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.12),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+              border: Border.all(color: AppColors.primary.withOpacity(0.25)),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.lightbulb_outline_rounded,
-                    color: AppColors.primaryLight, size: 20),
-                SizedBox(width: 12),
+                const Icon(Icons.lightbulb_outline_rounded,
+                    color: AppColors.primary, size: 20),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     'Financial messages that didn\'t match current bank templates are preserved here so new bank parsers can be built.',
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondaryDark,
+                      color: palette.textSecondary,
                       height: 1.4,
                     ),
                   ),
@@ -62,9 +63,9 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.surfaceDark,
+                color: palette.surface,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.cardBorderDark),
+                border: Border.all(color: palette.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,14 +78,14 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primaryLight,
+                          color: AppColors.primary,
                         ),
                       ),
                       Text(
                         DateFormatter.formatShortDate(item['date'] as DateTime),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
-                          color: AppColors.textMutedDark,
+                          color: palette.textMuted,
                         ),
                       ),
                     ],
@@ -94,16 +95,16 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.bgDark,
+                      color: palette.card,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.cardBorderDark),
+                      border: Border.all(color: palette.border),
                     ),
                     child: Text(
                       item['raw'] as String,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'monospace',
                         fontSize: 12,
-                        color: AppColors.textSecondaryDark,
+                        color: palette.textSecondary,
                         height: 1.4,
                       ),
                     ),

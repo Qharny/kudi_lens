@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'core/theme/app_theme.dart';
 import 'features/shell/app_shell.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set system navigation & status bar style for immersive dark theme
+  // Set system navigation & status bar style for clean light theme default
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Color(0xFF0B0F19),
-      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Color(0xFFFFFFFF),
+      systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
 
-  runApp(
-    const ProviderScope(
-      child: KudiLensApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: KudiLensApp()));
 }
 
 class KudiLensApp extends StatelessWidget {
@@ -34,7 +31,7 @@ class KudiLensApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       home: const AppShell(),
     );
   }

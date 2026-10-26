@@ -15,6 +15,8 @@ class AttentionBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     if (pendingCount == 0) return const SizedBox.shrink();
 
+    final palette = context.palette;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -62,18 +64,18 @@ class AttentionBanner extends StatelessWidget {
                         pendingCount == 1
                             ? '1 Bank alert needs your details'
                             : '$pendingCount Bank alerts need your details',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimaryDark,
+                          color: palette.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 2),
-                      const Text(
+                      Text(
                         'Tap to categorize while you still remember',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondaryDark,
+                          color: palette.textSecondary,
                         ),
                       ),
                     ],

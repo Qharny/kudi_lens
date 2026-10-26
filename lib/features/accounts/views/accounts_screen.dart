@@ -14,20 +14,24 @@ class AccountsScreen extends ConsumerWidget {
     final numberController = TextEditingController();
     final balanceController = TextEditingController();
     String selectedProvider = 'calbank';
+    final palette = context.palette;
 
     showDialog(
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          backgroundColor: AppColors.surfaceDark,
-          title: const Text('Add Account / Wallet'),
+          backgroundColor: palette.surface,
+          title: Text(
+            'Add Account / Wallet',
+            style: TextStyle(color: palette.textPrimary),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String>(
                   value: selectedProvider,
-                  dropdownColor: AppColors.cardDark,
+                  dropdownColor: palette.surface,
                   decoration: const InputDecoration(labelText: 'Provider'),
                   items: const [
                     DropdownMenuItem(
@@ -46,6 +50,7 @@ class AccountsScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 TextField(
                   controller: nameController,
+                  style: TextStyle(color: palette.textPrimary),
                   decoration: const InputDecoration(
                     labelText: 'Account Name (e.g. Current A/C)',
                   ),
@@ -53,6 +58,7 @@ class AccountsScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 TextField(
                   controller: numberController,
+                  style: TextStyle(color: palette.textPrimary),
                   decoration: const InputDecoration(
                     labelText: 'Masked Number (e.g. 140***721)',
                   ),
@@ -62,6 +68,7 @@ class AccountsScreen extends ConsumerWidget {
                   controller: balanceController,
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
+                  style: TextStyle(color: palette.textPrimary),
                   decoration: const InputDecoration(
                     labelText: 'Current Balance (GHS)',
                   ),
@@ -105,9 +112,10 @@ class AccountsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final accounts = ref.watch(accountProvider);
     final totalBalance = ref.watch(totalBalanceProvider);
+    final palette = context.palette;
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: const Text('Accounts & Wallets'),
         actions: [
@@ -125,30 +133,30 @@ class AccountsScreen extends ConsumerWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: AppColors.surfaceDark,
+              color: palette.surface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.cardBorderDark),
+              border: Border.all(color: palette.border),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Combined Liquidity',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondaryDark,
+                        color: palette.textSecondary,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       'All Wallets',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimaryDark,
+                        color: palette.textPrimary,
                       ),
                     ),
                   ],
@@ -181,24 +189,24 @@ class AccountsScreen extends ConsumerWidget {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.bgDark,
+              color: palette.card,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.cardBorderDark),
+              border: Border.all(color: palette.border),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.shield_outlined,
                   size: 20,
-                  color: AppColors.primaryLight,
+                  color: AppColors.primary,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     'Balances are automatically reconciled directly from your bank debit and credit notifications.',
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondaryDark,
+                      color: palette.textSecondary,
                       height: 1.4,
                     ),
                   ),
@@ -217,15 +225,20 @@ class AccountsScreen extends ConsumerWidget {
       BuildContext context, WidgetRef ref, Account account) {
     final controller =
         TextEditingController(text: account.lastBalance.toStringAsFixed(2));
+    final palette = context.palette;
 
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.surfaceDark,
-        title: Text('Adjust ${account.name} Balance'),
+        backgroundColor: palette.surface,
+        title: Text(
+          'Adjust ${account.name} Balance',
+          style: TextStyle(color: palette.textPrimary),
+        ),
         content: TextField(
           controller: controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          style: TextStyle(color: palette.textPrimary),
           decoration: const InputDecoration(
             labelText: 'New Balance (GHS)',
           ),

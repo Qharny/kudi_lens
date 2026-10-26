@@ -22,6 +22,8 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+
     // Only aggregate expenses (excluding transfers & income)
     final expenses = widget.transactions
         .where((tx) =>
@@ -32,9 +34,9 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
       return Container(
         height: 200,
         alignment: Alignment.center,
-        child: const Text(
+        child: Text(
           'No spending recorded for this period',
-          style: TextStyle(color: AppColors.textMutedDark),
+          style: TextStyle(color: palette.textMuted),
         ),
       );
     }
@@ -95,21 +97,21 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
+                  Text(
                     'Total Spent',
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.textMutedDark,
+                      color: palette.textMuted,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     CurrencyFormatter.formatCompact(totalSpend),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimaryDark,
+                      color: palette.textPrimary,
                     ),
                   ),
                 ],
@@ -124,7 +126,7 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: entries.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (context, index) {
             final entry = entries[index];
             final cat = CategoryItem.findByName(entry.key);
@@ -133,9 +135,9 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.surfaceDark,
+                color: palette.surface,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.cardBorderDark),
+                border: Border.all(color: palette.border),
               ),
               child: Row(
                 children: [
@@ -153,27 +155,27 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
                   Expanded(
                     child: Text(
                       cat.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimaryDark,
+                        color: palette.textPrimary,
                       ),
                     ),
                   ),
                   Text(
                     '${percent.toStringAsFixed(0)}%',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textMutedDark,
+                      color: palette.textMuted,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Text(
                     CurrencyFormatter.format(entry.value),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimaryDark,
+                      color: palette.textPrimary,
                     ),
                   ),
                 ],

@@ -12,9 +12,10 @@ class PendingAlertsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pendingAlerts = ref.watch(pendingAlertsProvider);
+    final palette = context.palette;
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: palette.bg,
       appBar: AppBar(
         title: Row(
           children: [
@@ -24,7 +25,7 @@ class PendingAlertsScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppColors.pending.withOpacity(0.2),
+                  color: AppColors.pending.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: AppColors.pending.withOpacity(0.4),
@@ -62,21 +63,21 @@ class PendingAlertsScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'All caught up!',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimaryDark,
+                        color: palette.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'All recent bank and MoMo alerts have been categorized.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textSecondaryDark,
+                        color: palette.textSecondary,
                       ),
                     ),
                   ],
@@ -131,7 +132,7 @@ class PendingAlertsScreen extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Saved as $category!'),
-                          backgroundColor: AppColors.surfaceDark,
+                          backgroundColor: palette.surface,
                           duration: const Duration(seconds: 2),
                         ),
                       );

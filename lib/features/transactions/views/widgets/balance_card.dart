@@ -39,10 +39,10 @@ class _BalanceCardState extends State<BalanceCard> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.cardBorderDark, width: 1.2),
+        border: Border.all(color: Colors.white.withOpacity(0.12), width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.15),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -61,7 +61,7 @@ class _BalanceCardState extends State<BalanceCard> {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondaryDark,
+                      color: Colors.white70,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -72,7 +72,7 @@ class _BalanceCardState extends State<BalanceCard> {
                           ? Icons.visibility_off_rounded
                           : Icons.visibility_rounded,
                       size: 16,
-                      color: AppColors.textMutedDark,
+                      color: Colors.white60,
                     ),
                   ),
                 ],
@@ -83,7 +83,7 @@ class _BalanceCardState extends State<BalanceCard> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Row(
@@ -94,14 +94,14 @@ class _BalanceCardState extends State<BalanceCard> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primaryLight,
+                          color: Colors.white,
                         ),
                       ),
                       SizedBox(width: 2),
                       Icon(
                         Icons.chevron_right_rounded,
                         size: 14,
-                        color: AppColors.primaryLight,
+                        color: Colors.white,
                       ),
                     ],
                   ),
@@ -118,80 +118,96 @@ class _BalanceCardState extends State<BalanceCard> {
               fontSize: 32,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.8,
-              color: AppColors.textPrimaryDark,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 16),
-          const Divider(color: AppColors.cardBorderDark, height: 1),
+          Divider(color: Colors.white.withOpacity(0.12), height: 1),
           const SizedBox(height: 14),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.expense.withOpacity(0.15),
-                      shape: BoxShape.circle,
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: AppColors.expense.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_downward_rounded,
+                        size: 14,
+                        color: Color(0xFFFDA4AF),
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.arrow_downward_rounded,
-                      size: 14,
-                      color: AppColors.expense,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Today's Spend",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          Text(
+                            _hideBalance
+                                ? '••••'
+                                : CurrencyFormatter.format(widget.todaySpending),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Default/Primary account mini badge
+              if (widget.accounts.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.15),
+                      width: 0.8,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Today's Spend",
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: AppColors.textSecondaryDark,
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: AppColors.income,
+                          shape: BoxShape.circle,
                         ),
                       ),
+                      const SizedBox(width: 5),
                       Text(
-                        _hideBalance
-                            ? '••••'
-                            : CurrencyFormatter.format(widget.todaySpending),
+                        '${widget.accounts.first.name.split(' ').first}: ${CurrencyFormatter.formatCompact(widget.accounts.first.lastBalance)}',
                         style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimaryDark,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white70,
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-              // Account badges mini summary
-              Wrap(
-                spacing: 6,
-                children: widget.accounts.take(2).map((acc) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceDark,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: AppColors.cardBorderDark,
-                        width: 0.8,
-                      ),
-                    ),
-                    child: Text(
-                      '${acc.name.split(' ').first}: ${CurrencyFormatter.formatCompact(acc.lastBalance)}',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textSecondaryDark,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+                ),
             ],
           ),
         ],

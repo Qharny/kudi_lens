@@ -16,6 +16,7 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     Color providerColor;
     IconData providerIcon;
 
@@ -25,7 +26,7 @@ class AccountCard extends StatelessWidget {
         providerIcon = Icons.account_balance_rounded;
         break;
       case 'mtn_momo':
-        providerColor = const Color(0xFFEAB308); // MoMo Yellow
+        providerColor = const Color(0xFFCA8A04); // MoMo Amber
         providerIcon = Icons.phone_android_rounded;
         break;
       case 'telecel':
@@ -42,9 +43,9 @@ class AccountCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceDark,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.cardBorderDark),
+        border: Border.all(color: palette.border),
       ),
       child: Material(
         color: Colors.transparent,
@@ -59,51 +60,58 @@ class AccountCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: providerColor.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            providerIcon,
-                            color: providerColor,
-                            size: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              account.name,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimaryDark,
-                              ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: providerColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              account.maskedNumber,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textMutedDark,
-                                fontFamily: 'monospace',
-                              ),
+                            child: Icon(
+                              providerIcon,
+                              color: providerColor,
+                              size: 20,
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  account.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: palette.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  account.maskedNumber,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: palette.textMuted,
+                                    fontFamily: 'monospace',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    if (account.isDefault)
+                    if (account.isDefault) ...[
+                      const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.15),
+                          color: AppColors.primary.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: const Text(
@@ -111,14 +119,15 @@ class AccountCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.primaryLight,
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 16),
-                const Divider(height: 1),
+                Divider(height: 1, color: palette.border),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,20 +136,20 @@ class AccountCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Last Reported Balance',
                           style: TextStyle(
                             fontSize: 11,
-                            color: AppColors.textSecondaryDark,
+                            color: palette.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           CurrencyFormatter.format(account.lastBalance),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimaryDark,
+                            color: palette.textPrimary,
                           ),
                         ),
                       ],
@@ -158,9 +167,9 @@ class AccountCard extends StatelessWidget {
                         const SizedBox(width: 6),
                         Text(
                           DateFormatter.formatShortDate(account.lastBalanceDate),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
-                            color: AppColors.textSecondaryDark,
+                            color: palette.textSecondary,
                           ),
                         ),
                       ],

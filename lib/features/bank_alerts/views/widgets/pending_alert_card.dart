@@ -21,7 +21,7 @@ class PendingAlertCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Top 4 quick suggestion categories
+    final palette = context.palette;
     final quickCategories = [
       'Food & Dining',
       'Transport',
@@ -32,7 +32,7 @@ class PendingAlertCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceDark,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.pending.withOpacity(0.4),
@@ -86,18 +86,18 @@ class PendingAlertCard extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           DateFormatter.formatTime(alert.date),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: AppColors.textMutedDark,
+                            color: palette.textMuted,
                           ),
                         ),
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close_rounded,
                         size: 18,
-                        color: AppColors.textMutedDark,
+                        color: palette.textMuted,
                       ),
                       onPressed: onDismiss,
                       tooltip: 'Dismiss alert',
@@ -111,11 +111,11 @@ class PendingAlertCard extends StatelessWidget {
                 // Amount
                 Text(
                   CurrencyFormatter.format(alert.amount),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
-                    color: AppColors.textPrimaryDark,
+                    color: palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -127,30 +127,30 @@ class PendingAlertCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.bgDark,
+                      color: palette.card,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.cardBorderDark),
+                      border: Border.all(color: palette.border),
                     ),
                     child: Text(
                       'Info: ${alert.narration}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontFamily: 'monospace',
-                        color: AppColors.textSecondaryDark,
+                        color: palette.textSecondary,
                       ),
                     ),
                   ),
                 const SizedBox(height: 14),
 
                 // Prompt & Quick Categorize Chips
-                const Text(
+                Text(
                   'What was this for?',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondaryDark,
+                    color: palette.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -178,21 +178,21 @@ class PendingAlertCard extends StatelessWidget {
                       );
                     }),
                     ActionChip(
-                      avatar: const Icon(
+                      avatar: Icon(
                         Icons.more_horiz_rounded,
                         size: 14,
-                        color: AppColors.textSecondaryDark,
+                        color: palette.textSecondary,
                       ),
-                      label: const Text(
+                      label: Text(
                         'More...',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textSecondaryDark,
+                          color: palette.textSecondary,
                         ),
                       ),
-                      backgroundColor: AppColors.cardDark,
-                      side: const BorderSide(color: AppColors.cardBorderDark),
+                      backgroundColor: palette.card,
+                      side: BorderSide(color: palette.border),
                       onPressed: onTap,
                     ),
                   ],
