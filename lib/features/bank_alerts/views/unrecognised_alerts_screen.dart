@@ -41,8 +41,8 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.lightbulb_outline_rounded,
-                    color: AppColors.primary, size: 20),
+                Icon(Icons.lightbulb_outline_rounded,
+                    color: palette.textPrimary, size: 22),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(

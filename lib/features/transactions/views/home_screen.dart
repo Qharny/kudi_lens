@@ -34,25 +34,10 @@ class HomeScreen extends ConsumerWidget {
         titleSpacing: 16,
         title: Row(
           children: [
-            // Clean Solid App Icon (No gradient, No glow)
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(palette.isDark ? 0.2 : 0.12),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: AppColors.primary.withOpacity(0.3),
-                  width: 1.2,
-                ),
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.account_balance_wallet_rounded,
-                  color: AppColors.primary,
-                  size: 20,
-                ),
-              ),
+            Icon(
+              Icons.account_balance_wallet_rounded,
+              color: palette.textPrimary,
+              size: 26,
             ),
             const SizedBox(width: 10),
             Column(
@@ -70,20 +55,13 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
-                      decoration: BoxDecoration(
-                        color: AppColors.income.withOpacity(0.12),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Text(
-                        'OFFLINE',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.income,
-                          letterSpacing: 0.4,
-                        ),
+                    Text(
+                      '• OFFLINE',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: palette.textMuted,
+                        letterSpacing: 0.4,
                       ),
                     ),
                   ],
@@ -105,56 +83,36 @@ class HomeScreen extends ConsumerWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                  color: palette.card,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: palette.border, width: 1),
+              IconButton(
+                icon: Icon(
+                  Icons.notifications_outlined,
+                  color: palette.textPrimary,
+                  size: 24,
                 ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.notifications_outlined,
-                    color: pendingCount > 0
-                        ? AppColors.pendingDark
-                        : palette.textSecondary,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const PendingAlertsScreen(),
-                      ),
-                    );
-                  },
-                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const PendingAlertsScreen(),
+                    ),
+                  );
+                },
               ),
               if (pendingCount > 0)
                 Positioned(
-                  right: 2,
-                  top: 5,
+                  right: 8,
+                  top: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
-                    decoration: BoxDecoration(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
                       color: AppColors.pending,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white, width: 1.2),
-                    ),
-                    constraints: const BoxConstraints(minWidth: 16),
-                    child: Text(
-                      '$pendingCount',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 8),
         ],
       ),
       body: CustomScrollView(

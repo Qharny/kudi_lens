@@ -47,25 +47,17 @@ class RulesManagerScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              'Matches ${rule.matchType}',
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
+                          Text(
+                            'Matches ${rule.matchType}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: palette.textSecondary,
                             ),
                           ),
                           IconButton(
                             icon: Icon(Icons.delete_outline_rounded,
-                                size: 18, color: palette.textMuted),
+                                size: 18, color: palette.textPrimary),
                             onPressed: () {
                               ref
                                   .read(rulesProvider.notifier)
@@ -90,31 +82,23 @@ class RulesManagerScreen extends ConsumerWidget {
                       Row(
                         children: [
                           Icon(Icons.arrow_forward_rounded,
-                              size: 14, color: palette.textMuted),
+                              size: 14, color: palette.textPrimary),
                           const SizedBox(width: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: category.color.withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(category.icon,
-                                    size: 14, color: category.color),
-                                const SizedBox(width: 4),
-                                Text(
-                                  category.name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: category.color,
-                                  ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(category.icon,
+                                  size: 16, color: palette.textPrimary),
+                              const SizedBox(width: 5),
+                              Text(
+                                category.name,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: palette.textPrimary,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           const Spacer(),
                           Text(

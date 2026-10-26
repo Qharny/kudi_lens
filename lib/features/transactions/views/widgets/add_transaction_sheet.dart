@@ -166,16 +166,8 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                 ),
                 GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: palette.card,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: palette.border, width: 1.2),
-                    ),
-                    child: Icon(Icons.close_rounded,
-                        size: 16, color: palette.textMuted),
-                  ),
+                  child: Icon(Icons.close_rounded,
+                      size: 22, color: palette.textPrimary),
                 ),
               ],
             ),
@@ -215,21 +207,13 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
               ),
               child: Row(
                 children: [
-                  // Clean Solid GHS Badge (No gradient, No glow)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      'GHS',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
-                      ),
+                  Text(
+                    'GHS',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      color: palette.textSecondary,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -303,7 +287,7 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                           Icon(
                             cat.icon,
                             size: 15,
-                            color: isSelected ? cat.color : palette.textSecondary,
+                            color: palette.textPrimary,
                           ),
                           const SizedBox(width: 6),
                           Text(

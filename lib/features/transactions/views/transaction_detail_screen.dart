@@ -192,29 +192,16 @@ class TransactionDetailScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
                       child: Column(
                         children: [
-                          // Category Icon Bubble
-                          Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              color: primaryColor.withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: primaryColor.withOpacity(0.3),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: Icon(
-                              isFee
-                                  ? Icons.receipt_long_rounded
-                                  : isTransfer
-                                      ? Icons.swap_horiz_rounded
-                                      : isIncome
-                                          ? Icons.arrow_downward_rounded
-                                          : category.icon,
-                              color: primaryColor,
-                              size: 30,
-                            ),
+                          Icon(
+                            isFee
+                                ? Icons.receipt_long_rounded
+                                : isTransfer
+                                    ? Icons.swap_horiz_rounded
+                                    : isIncome
+                                        ? Icons.arrow_downward_rounded
+                                        : category.icon,
+                            color: palette.textPrimary,
+                            size: 38,
                           ),
                           const SizedBox(height: 14),
 
@@ -236,30 +223,12 @@ class TransactionDetailScreen extends ConsumerWidget {
                             children: [
                               CategoryBadge(categoryName: tx.category ?? 'Unclassified'),
                               const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: tx.source == TransactionSource.bankAlert
-                                      ? AppColors.primary.withOpacity(0.12)
-                                      : palette.card,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: tx.source == TransactionSource.bankAlert
-                                        ? AppColors.primary.withOpacity(0.3)
-                                        : palette.border,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Text(
-                                  tx.source.displayName,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                    color: tx.source == TransactionSource.bankAlert
-                                        ? AppColors.primary
-                                        : palette.textSecondary,
-                                  ),
+                              Text(
+                                '• ${tx.source.displayName}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: palette.textSecondary,
                                 ),
                               ),
                             ],
@@ -354,17 +323,10 @@ class TransactionDetailScreen extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.transfer.withOpacity(0.18),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.swap_horiz_rounded,
-                        color: AppColors.transfer,
-                        size: 20,
-                      ),
+                    Icon(
+                      Icons.swap_horiz_rounded,
+                      color: palette.textPrimary,
+                      size: 24,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -414,12 +376,12 @@ class TransactionDetailScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             Icon(Icons.terminal_rounded,
-                                size: 14, color: AppColors.primary),
-                            SizedBox(width: 6),
-                            Text(
+                                size: 14, color: palette.textPrimary),
+                            const SizedBox(width: 6),
+                            const Text(
                               'ORIGINAL BANK ALERT AUDIT TRAIL',
                               style: TextStyle(
                                 fontSize: 10,
@@ -440,28 +402,20 @@ class TransactionDetailScreen extends ConsumerWidget {
                               ),
                             );
                           },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: palette.card,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: palette.border),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.copy_rounded,
-                                    size: 11, color: palette.textSecondary),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Copy',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: palette.textSecondary,
-                                  ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.copy_rounded,
+                                  size: 13, color: palette.textPrimary),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Copy',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: palette.textPrimary,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -499,14 +453,7 @@ class TransactionDetailScreen extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: palette.card,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, size: 15, color: palette.textSecondary),
-          ),
+          Icon(icon, size: 18, color: palette.textPrimary),
           const SizedBox(width: 12),
           Text(
             label,

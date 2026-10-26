@@ -25,22 +25,12 @@ class PendingAlertsScreen extends ConsumerWidget {
             ),
             const SizedBox(width: 8),
             if (pendingAlerts.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.pending.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: AppColors.pending.withOpacity(0.35),
-                  ),
-                ),
-                child: Text(
-                  '${pendingAlerts.length}',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.pendingDark,
-                  ),
+              Text(
+                '(${pendingAlerts.length})',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: palette.textSecondary,
                 ),
               ),
           ],
@@ -53,25 +43,10 @@ class PendingAlertsScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Clean Solid Checkmark Badge (No gradient, No glow)
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        color: AppColors.income.withOpacity(palette.isDark ? 0.2 : 0.12),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.income.withOpacity(0.3),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.check_circle_outline_rounded,
-                          size: 38,
-                          color: AppColors.income,
-                        ),
-                      ),
+                    Icon(
+                      Icons.check_circle_outline_rounded,
+                      size: 64,
+                      color: palette.textPrimary,
                     ),
                     const SizedBox(height: 20),
                     Text(

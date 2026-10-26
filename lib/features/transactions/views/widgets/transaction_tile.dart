@@ -23,24 +23,19 @@ class TransactionTile extends StatelessWidget {
     final isTransfer = transaction.type == TransactionType.transfer;
     final palette = context.palette;
 
-    Color themeColor;
     IconData displayIcon;
     String prefix;
 
     if (isIncome) {
-      themeColor = AppColors.income;
       prefix = '+';
       displayIcon = Icons.arrow_downward_rounded;
     } else if (isFee) {
-      themeColor = AppColors.fee;
       prefix = '-';
       displayIcon = Icons.receipt_long_rounded;
     } else if (isTransfer) {
-      themeColor = AppColors.transfer;
       prefix = '-';
       displayIcon = Icons.swap_horiz_rounded;
     } else {
-      themeColor = category.color;
       prefix = '-';
       displayIcon = category.icon;
     }
@@ -73,25 +68,10 @@ class TransactionTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             child: Row(
               children: [
-                // Clean Solid Icon Container (No gradient, No glow)
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: themeColor.withOpacity(palette.isDark ? 0.2 : 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: themeColor.withOpacity(0.3),
-                      width: 1.2,
-                    ),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      displayIcon,
-                      color: themeColor,
-                      size: 22,
-                    ),
-                  ),
+                Icon(
+                  displayIcon,
+                  color: palette.textPrimary,
+                  size: 24,
                 ),
                 const SizedBox(width: 14),
 
@@ -118,31 +98,18 @@ class TransactionTile extends StatelessWidget {
                       Row(
                         children: [
                           if (transaction.source == TransactionSource.bankAlert) ...[
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.12),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.bolt_rounded,
-                                    size: 11,
-                                    color: AppColors.primary,
-                                  ),
-                                  const SizedBox(width: 2),
-                                  const Text(
-                                    'Auto',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                ],
+                            Icon(
+                              Icons.bolt_rounded,
+                              size: 13,
+                              color: palette.textPrimary,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              'Auto',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: palette.textSecondary,
                               ),
                             ),
                             const SizedBox(width: 6),
@@ -205,23 +172,12 @@ class TransactionTile extends StatelessWidget {
                     ),
                     if (transaction.status.isPending) ...[
                       const SizedBox(height: 2),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppColors.pending.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                            color: AppColors.pending.withOpacity(0.3),
-                          ),
-                        ),
-                        child: const Text(
-                          'Needs details',
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.pending,
-                          ),
+                      const Text(
+                        'Needs details',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.pending,
                         ),
                       ),
                     ],

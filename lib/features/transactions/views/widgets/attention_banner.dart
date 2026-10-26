@@ -43,25 +43,10 @@ class AttentionBanner extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Clean Solid Icon Container (No gradient, No glow)
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.pending.withOpacity(palette.isDark ? 0.22 : 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.pending.withOpacity(0.35),
-                      width: 1.2,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.bolt_rounded,
-                      color: AppColors.pendingDark,
-                      size: 22,
-                    ),
-                  ),
+                Icon(
+                  Icons.bolt_rounded,
+                  color: palette.textPrimary,
+                  size: 24,
                 ),
                 const SizedBox(width: 12),
 
@@ -70,26 +55,14 @@ class AttentionBanner extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: AppColors.pending.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: const Text(
-                              'ACTION NEEDED',
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.5,
-                                color: AppColors.pendingDark,
-                              ),
-                            ),
-                          ),
-                        ],
+                      const Text(
+                        'ACTION NEEDED',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                          color: AppColors.pendingDark,
+                        ),
                       ),
                       const SizedBox(height: 3),
                       Text(
@@ -116,23 +89,10 @@ class AttentionBanner extends StatelessWidget {
                   ),
                 ),
 
-                // Right Arrow Pill
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: palette.card,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: palette.border,
-                      width: 1,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
-                    size: 18,
-                    color: palette.textSecondary,
-                  ),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 22,
+                  color: palette.textPrimary,
                 ),
               ],
             ),

@@ -190,18 +190,11 @@ class AccountsScreen extends ConsumerWidget {
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              color: palette.card,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: palette.border, width: 1.2),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.add_rounded, size: 22),
-              onPressed: () => _showAddAccountDialog(context, ref),
-            ),
+          IconButton(
+            icon: Icon(Icons.add_rounded, size: 24, color: palette.textPrimary),
+            onPressed: () => _showAddAccountDialog(context, ref),
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: ListView(
@@ -266,23 +259,12 @@ class AccountsScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.income.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: AppColors.income.withOpacity(0.25),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    '${accounts.length} Wallets',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.income,
-                    ),
+                Text(
+                  '${accounts.length} Wallets',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: palette.textSecondary,
                   ),
                 ),
               ],
@@ -325,12 +307,12 @@ class AccountsScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.add_circle_outline_rounded,
-                          color: AppColors.primary, size: 20),
-                      SizedBox(width: 8),
+                          color: palette.textPrimary, size: 20),
+                      const SizedBox(width: 8),
                       Text(
                         'Add Bank Account or MoMo Wallet',
                         style: TextStyle(

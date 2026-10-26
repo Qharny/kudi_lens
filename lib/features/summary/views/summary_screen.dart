@@ -151,15 +151,8 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: AppColors.pending.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.bolt_rounded,
-                          size: 15, color: AppColors.pendingDark),
-                    ),
+                    Icon(Icons.bolt_rounded,
+                        size: 20, color: palette.textPrimary),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -178,17 +171,10 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
             // Spending Breakdown Heading with clean badge
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.pie_chart_rounded,
-                    size: 15,
-                    color: AppColors.primary,
-                  ),
+                Icon(
+                  Icons.pie_chart_rounded,
+                  size: 20,
+                  color: palette.textPrimary,
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -270,33 +256,13 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Clean Solid Icon Container (No gradient, No glow)
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: accentColor.withOpacity(palette.isDark ? 0.2 : 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: accentColor.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: Icon(icon, size: 16, color: accentColor),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  tagText,
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
-                    color: accentColor,
-                  ),
+              Icon(icon, size: 22, color: palette.textPrimary),
+              Text(
+                tagText,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: palette.textSecondary,
                 ),
               ),
             ],

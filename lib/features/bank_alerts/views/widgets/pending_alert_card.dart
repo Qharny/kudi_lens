@@ -63,35 +63,24 @@ class PendingAlertCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.pending.withOpacity(0.12),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppColors.pending.withOpacity(0.35),
-                          width: 1,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.bolt_rounded,
+                          size: 15,
+                          color: palette.textPrimary,
                         ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.bolt_rounded,
-                            size: 13,
-                            color: AppColors.pendingDark,
+                        const SizedBox(width: 4),
+                        Text(
+                          providerName,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: palette.textPrimary,
                           ),
-                          const SizedBox(width: 5),
-                          Text(
-                            providerName,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.pendingDark,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
@@ -106,18 +95,10 @@ class PendingAlertCard extends StatelessWidget {
                         const SizedBox(width: 8),
                         GestureDetector(
                           onTap: onDismiss,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: palette.card,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: palette.border, width: 1),
-                            ),
-                            child: Icon(
-                              Icons.close_rounded,
-                              size: 14,
-                              color: palette.textMuted,
-                            ),
+                          child: Icon(
+                            Icons.close_rounded,
+                            size: 18,
+                            color: palette.textPrimary,
                           ),
                         ),
                       ],
@@ -141,24 +122,13 @@ class PendingAlertCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.expense.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: AppColors.expense.withOpacity(0.25),
-                          width: 1,
-                        ),
-                      ),
-                      child: const Text(
-                        'DEBIT',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.expense,
-                          letterSpacing: 0.4,
-                        ),
+                    const Text(
+                      'DEBIT',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.expense,
+                        letterSpacing: 0.4,
                       ),
                     ),
                   ],
@@ -183,7 +153,7 @@ class PendingAlertCard extends StatelessWidget {
                         Icon(
                           Icons.receipt_long_rounded,
                           size: 14,
-                          color: palette.textMuted,
+                          color: palette.textPrimary,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
@@ -287,7 +257,7 @@ class _CartoonQuickButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 14, color: color),
+              Icon(icon, size: 14, color: palette.textPrimary),
               const SizedBox(width: 5),
               Text(
                 label,

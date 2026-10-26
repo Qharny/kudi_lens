@@ -57,15 +57,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Section: Alert Tracking
           _buildSectionHeader('AUTOMATED BANK ALERT TRACKING', palette),
           SwitchListTile(
-            secondary: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.notifications_active_rounded,
-                  color: AppColors.primary, size: 20),
-            ),
+            secondary: Icon(Icons.notifications_active_rounded,
+                color: palette.textPrimary, size: 24),
             title: Text('Auto-track bank alerts',
                 style: TextStyle(fontWeight: FontWeight.w600, color: palette.textPrimary)),
             subtitle: Text(
@@ -77,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: Icon(Icons.battery_charging_full_rounded,
-                color: palette.textSecondary),
+                color: palette.textPrimary),
             title: Text('Battery Optimization Guide',
                 style: TextStyle(color: palette.textPrimary)),
             subtitle: Text('Ensure background listener stays alive',
@@ -122,8 +115,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Section: Intelligence & Rules
           _buildSectionHeader('INTELLIGENCE & PARSING', palette),
           ListTile(
-            leading: const Icon(Icons.psychology_rounded,
-                color: AppColors.primary),
+            leading: Icon(Icons.psychology_rounded,
+                color: palette.textPrimary),
             title: Text('Learned Categorization Rules',
                 style: TextStyle(color: palette.textPrimary)),
             subtitle: Text('Review patterns the app learned from you',
@@ -139,8 +132,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mark_email_unread_rounded,
-                color: AppColors.pending),
+            leading: Icon(Icons.mark_email_unread_rounded,
+                color: palette.textPrimary),
             title: Text('Unrecognised Alerts',
                 style: TextStyle(color: palette.textPrimary)),
             subtitle: Text('View financial alerts that didn\'t match templates',
@@ -160,30 +153,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Section: Privacy & Security
           _buildSectionHeader('SECURITY & DATA PRIVACY', palette),
           ListTile(
-            leading: const Icon(Icons.lock_rounded, color: AppColors.income),
+            leading: Icon(Icons.lock_rounded, color: palette.textPrimary),
             title: Text('On-Device Encryption',
                 style: TextStyle(color: palette.textPrimary)),
             subtitle: Text('AES-256 encrypted storage via Hive CE & Keystore',
                 style: TextStyle(fontSize: 12, color: palette.textSecondary)),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: AppColors.income.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: const Text(
-                'Active',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.income,
-                ),
+            trailing: const Text(
+              'Active',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: AppColors.income,
               ),
             ),
           ),
           ListTile(
             leading: Icon(Icons.file_download_outlined,
-                color: palette.textSecondary),
+                color: palette.textPrimary),
             title: Text('Export Data',
                 style: TextStyle(color: palette.textPrimary)),
             subtitle: Text('Download transactions as CSV / JSON',
@@ -195,8 +181,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.delete_forever_rounded,
-                color: AppColors.expense),
+            leading: Icon(Icons.delete_forever_rounded,
+                color: palette.textPrimary),
             title: const Text('Wipe All Local Data',
                 style: TextStyle(color: AppColors.expense)),
             subtitle: Text('Erase all stored transactions, rules, and accounts',

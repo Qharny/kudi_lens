@@ -203,21 +203,8 @@ class _SpendDonutChartState extends State<SpendDonutChart> {
               ),
               child: Row(
                 children: [
-                  // Clean Solid Category Token (No gradient)
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: cat.color.withOpacity(palette.isDark ? 0.2 : 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: cat.color.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Icon(cat.icon, size: 18, color: cat.color),
-                  ),
-                  const SizedBox(width: 12),
+                  Icon(cat.icon, size: 24, color: palette.textPrimary),
+                  const SizedBox(width: 14),
 
                   // Name & Progress meter capsule
                   Expanded(
