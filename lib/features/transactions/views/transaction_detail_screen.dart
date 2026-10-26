@@ -5,7 +5,7 @@ import '../../../../core/models/transaction.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/utils/date_formatter.dart';
-import '../../../accounts/data/account_provider.dart';
+import '../../accounts/data/account_provider.dart';
 import '../data/transaction_provider.dart';
 import 'widgets/add_transaction_sheet.dart';
 import 'widgets/category_badge.dart';
@@ -21,22 +21,17 @@ class TransactionDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactions = ref.watch(transactionProvider);
-    final tx = transactions.firstWhere(
-      (item) => item.id == transactionId,
-      orElse: () => const TransactionItem(
-        id: '',
-        amount: 0,
-        type: TransactionType.expense,
-        date: null as dynamic,
-      ),
-    );
+    final txList =
+        transactions.where((item) => item.id == transactionId).toList();
 
-    if (tx.id.isEmpty) {
+    if (txList.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text('Transaction')),
         body: const Center(child: Text('Transaction not found')),
       );
     }
+
+    final tx = txList.first;
 
     final accounts = ref.watch(accountProvider);
     final account = accounts.where((a) => a.id == tx.accountId).firstOrNull;

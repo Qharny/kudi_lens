@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/transaction.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../transactions/views/widgets/add_transaction_sheet.dart';
+import '../../transactions/views/widgets/add_transaction_sheet.dart';
 import '../data/pending_alerts_provider.dart';
 import 'widgets/pending_alert_card.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../accounts/data/account_provider.dart';
+import '../../accounts/data/account_provider.dart';
 import '../../bank_alerts/data/pending_alerts_provider.dart';
 import '../../bank_alerts/views/pending_alerts_screen.dart';
 import '../data/transaction_provider.dart';
