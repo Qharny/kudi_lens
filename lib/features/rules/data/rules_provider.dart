@@ -1,9 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/rule.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
 import '../../../core/models/transaction.dart';
 
-class RulesNotifier extends StateNotifier<List<CategorizationRule>> {
-  RulesNotifier() : super(_initialRules);
+class RulesNotifier extends PersistedListNotifier<CategorizationRule> {
+  RulesNotifier(RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialRules),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: CategorizationRule.fromJson,
+        );
 
   static final List<CategorizationRule> _initialRules = [
     const CategorizationRule(
@@ -81,5 +90,5 @@ class RulesNotifier extends StateNotifier<List<CategorizationRule>> {
 
 final rulesProvider =
     StateNotifierProvider<RulesNotifier, List<CategorizationRule>>((ref) {
-  return RulesNotifier();
+  return RulesNotifier(ref.watch(appStorageProvider).rules);
 });

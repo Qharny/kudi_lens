@@ -39,6 +39,28 @@ class Account {
       isDefault: isDefault ?? this.isDefault,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'provider': provider,
+        'maskedNumber': maskedNumber,
+        'lastBalance': lastBalance,
+        'lastBalanceDate': lastBalanceDate.toIso8601String(),
+        'isDefault': isDefault,
+      };
+
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      provider: json['provider'] as String,
+      maskedNumber: json['maskedNumber'] as String,
+      lastBalance: (json['lastBalance'] as num).toDouble(),
+      lastBalanceDate: DateTime.parse(json['lastBalanceDate'] as String),
+      isDefault: json['isDefault'] as bool? ?? false,
+    );
+  }
 }
 
 class BankProvider {

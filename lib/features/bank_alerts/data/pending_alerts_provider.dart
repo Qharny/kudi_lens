@@ -1,11 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/transaction.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
 import '../../transactions/data/transaction_provider.dart';
 
-class PendingAlertNotifier extends StateNotifier<List<TransactionItem>> {
+class PendingAlertNotifier extends PersistedListNotifier<TransactionItem> {
   final Ref _ref;
 
-  PendingAlertNotifier(this._ref) : super(_initialPendingAlerts);
+  PendingAlertNotifier(this._ref, RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialPendingAlerts),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: TransactionItem.fromJson,
+          sortOnLoad: (a, b) => b.date.compareTo(a.date),
+        );
 
   static final List<TransactionItem> _initialPendingAlerts = [
     TransactionItem(
@@ -99,7 +109,7 @@ class PendingAlertNotifier extends StateNotifier<List<TransactionItem>> {
 
 final pendingAlertsProvider =
     StateNotifierProvider<PendingAlertNotifier, List<TransactionItem>>((ref) {
-  return PendingAlertNotifier(ref);
+  return PendingAlertNotifier(ref, ref.watch(appStorageProvider).pendingAlerts);
 });
 
 final pendingAlertsCountProvider = Provider<int>((ref) {

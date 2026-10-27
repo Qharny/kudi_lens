@@ -131,4 +131,50 @@ class TransactionItem {
       ruleId: ruleId ?? this.ruleId,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'amount': amount,
+        'currency': currency,
+        'type': type.name,
+        'category': category,
+        'note': note,
+        'date': date.toIso8601String(),
+        'isIncome': isIncome,
+        'source': source.name,
+        'status': status.name,
+        'accountId': accountId,
+        'merchant': merchant,
+        'narration': narration,
+        'location': location,
+        'balanceAfter': balanceAfter,
+        'rawMessage': rawMessage,
+        'messageHash': messageHash,
+        'linkedTransactionId': linkedTransactionId,
+        'ruleId': ruleId,
+      };
+
+  factory TransactionItem.fromJson(Map<String, dynamic> json) {
+    return TransactionItem(
+      id: json['id'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      currency: json['currency'] as String? ?? 'GHS',
+      type: TransactionType.values.byName(json['type'] as String),
+      category: json['category'] as String?,
+      note: json['note'] as String?,
+      date: DateTime.parse(json['date'] as String),
+      isIncome: json['isIncome'] as bool? ?? false,
+      source: TransactionSource.values.byName(json['source'] as String),
+      status: TransactionStatus.values.byName(json['status'] as String),
+      accountId: json['accountId'] as String?,
+      merchant: json['merchant'] as String?,
+      narration: json['narration'] as String?,
+      location: json['location'] as String?,
+      balanceAfter: (json['balanceAfter'] as num?)?.toDouble(),
+      rawMessage: json['rawMessage'] as String?,
+      messageHash: json['messageHash'] as String?,
+      linkedTransactionId: json['linkedTransactionId'] as String?,
+      ruleId: json['ruleId'] as String?,
+    );
+  }
 }

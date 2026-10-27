@@ -1,11 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/models/transaction.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
 
 const _uuid = Uuid();
 
-class TransactionNotifier extends StateNotifier<List<TransactionItem>> {
-  TransactionNotifier() : super(_initialTransactions);
+class TransactionNotifier extends PersistedListNotifier<TransactionItem> {
+  TransactionNotifier(RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialTransactions),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: TransactionItem.fromJson,
+          sortOnLoad: (a, b) => b.date.compareTo(a.date),
+        );
 
   static final List<TransactionItem> _initialTransactions = [
     TransactionItem(
@@ -189,7 +199,7 @@ class TransactionNotifier extends StateNotifier<List<TransactionItem>> {
 }
 
 final transactionProvider = StateNotifierProvider<TransactionNotifier, List<TransactionItem>>((ref) {
-  return TransactionNotifier();
+  return TransactionNotifier(ref.watch(appStorageProvider).transactions);
 });
 
 final recentTransactionsProvider = Provider<List<TransactionItem>>((ref) {
