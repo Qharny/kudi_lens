@@ -61,6 +61,14 @@ class AccountNotifier extends PersistedListNotifier<Account> {
     state = [...state, account];
   }
 
+  /// Replaces the account with the same id, or adds it if new.
+  void upsertAccount(Account account) {
+    final exists = state.any((acc) => acc.id == account.id);
+    state = exists
+        ? [for (final acc in state) acc.id == account.id ? account : acc]
+        : [...state, account];
+  }
+
   void updateBalance(String accountId, double newBalance) {
     state = [
       for (final acc in state)

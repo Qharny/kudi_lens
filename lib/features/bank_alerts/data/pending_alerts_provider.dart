@@ -80,6 +80,10 @@ class PendingAlertNotifier extends PersistedListNotifier<TransactionItem> {
     ),
   ];
 
+  void addAlert(TransactionItem alert) {
+    state = [alert, ...state];
+  }
+
   void dismissAlert(String alertId) {
     state = state.where((item) => item.id != alertId).toList();
   }

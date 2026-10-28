@@ -90,12 +90,14 @@ class AppStorage {
   final RecordStore pendingAlerts;
   final RecordStore accounts;
   final RecordStore rules;
+  final RecordStore unrecognisedAlerts;
 
   const AppStorage({
     required this.transactions,
     required this.pendingAlerts,
     required this.accounts,
     required this.rules,
+    required this.unrecognisedAlerts,
   });
 
   factory AppStorage.inMemory() => AppStorage(
@@ -103,6 +105,7 @@ class AppStorage {
         pendingAlerts: InMemoryRecordStore(),
         accounts: InMemoryRecordStore(),
         rules: InMemoryRecordStore(),
+        unrecognisedAlerts: InMemoryRecordStore(),
       );
 
   static const _encryptionKeyName = 'kudi_lens_hive_key';
@@ -131,6 +134,7 @@ class AppStorage {
       pendingAlerts: await openStore('pending_alerts'),
       accounts: await openStore('accounts'),
       rules: await openStore('rules'),
+      unrecognisedAlerts: await openStore('unrecognised_alerts'),
     );
   }
 }
