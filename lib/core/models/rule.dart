@@ -38,4 +38,26 @@ class CategorizationRule {
       autoConfirm: autoConfirm ?? this.autoConfirm,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'matchType': matchType,
+        'matchValue': matchValue,
+        'category': category,
+        'type': type.name,
+        'confirmations': confirmations,
+        'autoConfirm': autoConfirm,
+      };
+
+  factory CategorizationRule.fromJson(Map<String, dynamic> json) {
+    return CategorizationRule(
+      id: json['id'] as String,
+      matchType: json['matchType'] as String,
+      matchValue: json['matchValue'] as String,
+      category: json['category'] as String,
+      type: TransactionType.values.byName(json['type'] as String),
+      confirmations: json['confirmations'] as int? ?? 1,
+      autoConfirm: json['autoConfirm'] as bool? ?? false,
+    );
+  }
 }

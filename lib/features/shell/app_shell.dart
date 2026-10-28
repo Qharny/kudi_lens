@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
 import '../accounts/views/accounts_screen.dart';
+import '../bank_alerts/data/alert_ingestor.dart';
 import '../bank_alerts/data/pending_alerts_provider.dart';
 import '../settings/views/settings_screen.dart';
 import '../summary/views/summary_screen.dart';
@@ -14,8 +15,30 @@ class AppShell extends ConsumerStatefulWidget {
   ConsumerState<AppShell> createState() => _AppShellState();
 }
 
-class _AppShellState extends ConsumerState<AppShell> {
+class _AppShellState extends ConsumerState<AppShell>
+    with WidgetsBindingObserver {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _drainAlertQueue();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _drainAlertQueue();
+  }
+
+  /// Picks up alerts the native listener queued while the app was closed.
+  void _drainAlertQueue() => ref.read(alertIngestorProvider).drainQueue();
 
   @override
   Widget build(BuildContext context) {

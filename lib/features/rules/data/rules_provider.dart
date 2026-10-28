@@ -1,9 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import '../../../core/models/rule.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
 import '../../../core/models/transaction.dart';
+import '../../bank_alerts/domain/rule_engine.dart';
 
-class RulesNotifier extends StateNotifier<List<CategorizationRule>> {
-  RulesNotifier() : super(_initialRules);
+const _uuid = Uuid();
+
+class RulesNotifier extends PersistedListNotifier<CategorizationRule> {
+  RulesNotifier(RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialRules),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: CategorizationRule.fromJson,
+        );
 
   static final List<CategorizationRule> _initialRules = [
     const CategorizationRule(
@@ -64,6 +77,21 @@ class RulesNotifier extends StateNotifier<List<CategorizationRule>> {
     ];
   }
 
+  /// Records the user's answer for a pending [alert] (doc.md §11).
+  void learnFrom(
+    TransactionItem alert, {
+    required String category,
+    required TransactionType type,
+  }) {
+    state = learnFromConfirmation(
+      state,
+      alert,
+      category: category,
+      type: type,
+      newId: _uuid.v4,
+    );
+  }
+
   void deleteRule(String id) {
     state = state.where((rule) => rule.id != id).toList();
   }
@@ -81,5 +109,5 @@ class RulesNotifier extends StateNotifier<List<CategorizationRule>> {
 
 final rulesProvider =
     StateNotifierProvider<RulesNotifier, List<CategorizationRule>>((ref) {
-  return RulesNotifier();
+  return RulesNotifier(ref.watch(appStorageProvider).rules);
 });

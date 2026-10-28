@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../bank_alerts/data/alert_channel.dart';
 import '../../bank_alerts/views/unrecognised_alerts_screen.dart';
 import '../../onboarding/views/onboarding_screen.dart';
 import '../../rules/views/rules_manager_screen.dart';
@@ -11,8 +14,55 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _autoTrackAlerts = true;
+class _SettingsScreenState extends State<SettingsScreen>
+    with WidgetsBindingObserver {
+  /// Also read natively by AlertListenerService ("flutter.auto_track_alerts").
+  static const _autoTrackKey = 'auto_track_alerts';
+  static const _alertChannel = AlertChannel();
+
+  bool _autoTrackAlerts = false;
+  bool _listenerEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _loadAlertTrackingState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Re-check after the user returns from the system permission screen.
+    if (state == AppLifecycleState.resumed) _loadAlertTrackingState();
+  }
+
+  Future<void> _loadAlertTrackingState() async {
+    final prefs = await SharedPreferences.getInstance();
+    var listenerEnabled = false;
+    try {
+      listenerEnabled = await _alertChannel.isListenerEnabled();
+    } on MissingPluginException {
+      // No native listener (tests, non-Android).
+    }
+    if (!mounted) return;
+    setState(() {
+      _autoTrackAlerts = prefs.getBool(_autoTrackKey) ?? false;
+      _listenerEnabled = listenerEnabled;
+    });
+  }
+
+  Future<void> _setAutoTrack(bool value) async {
+    setState(() => _autoTrackAlerts = value);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_autoTrackKey, value);
+    if (value && !_listenerEnabled) await _alertChannel.openListenerSettings();
+  }
   final Set<String> _trackedProviders = {
     'calbank',
     'gcb',
@@ -75,8 +125,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(fontSize: 12, color: palette.textSecondary)),
             value: _autoTrackAlerts,
             activeColor: AppColors.primary,
-            onChanged: (val) => setState(() => _autoTrackAlerts = val),
+            onChanged: _setAutoTrack,
           ),
+          if (_autoTrackAlerts && !_listenerEnabled && _alertChannel.isSupported)
+            ListTile(
+              leading: const Icon(Icons.warning_amber_rounded,
+                  color: AppColors.pending),
+              title: Text('Grant notification access',
+                  style: TextStyle(color: palette.textPrimary)),
+              subtitle: Text(
+                  'Kudi Lens can\'t see bank alerts until access is granted',
+                  style: TextStyle(fontSize: 12, color: palette.textSecondary)),
+              trailing: Icon(Icons.chevron_right_rounded,
+                  color: palette.textMuted),
+              onTap: _alertChannel.openListenerSettings,
+            ),
           ListTile(
             leading: Icon(Icons.battery_charging_full_rounded,
                 color: palette.textPrimary),

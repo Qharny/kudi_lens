@@ -1,8 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/account.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
 
-class AccountNotifier extends StateNotifier<List<Account>> {
-  AccountNotifier() : super(_initialAccounts);
+class AccountNotifier extends PersistedListNotifier<Account> {
+  AccountNotifier(RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialAccounts),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: Account.fromJson,
+        );
 
   static final List<Account> _initialAccounts = [
     Account(
@@ -52,6 +61,14 @@ class AccountNotifier extends StateNotifier<List<Account>> {
     state = [...state, account];
   }
 
+  /// Replaces the account with the same id, or adds it if new.
+  void upsertAccount(Account account) {
+    final exists = state.any((acc) => acc.id == account.id);
+    state = exists
+        ? [for (final acc in state) acc.id == account.id ? account : acc]
+        : [...state, account];
+  }
+
   void updateBalance(String accountId, double newBalance) {
     state = [
       for (final acc in state)
@@ -78,7 +95,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
 }
 
 final accountProvider = StateNotifierProvider<AccountNotifier, List<Account>>((ref) {
-  return AccountNotifier();
+  return AccountNotifier(ref.watch(appStorageProvider).accounts);
 });
 
 final totalBalanceProvider = Provider<double>((ref) {

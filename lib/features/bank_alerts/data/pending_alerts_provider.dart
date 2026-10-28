@@ -1,11 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/transaction.dart';
+import '../../../core/storage/persisted_list_notifier.dart';
+import '../../../core/storage/record_store.dart';
+import '../../rules/data/rules_provider.dart';
 import '../../transactions/data/transaction_provider.dart';
 
-class PendingAlertNotifier extends StateNotifier<List<TransactionItem>> {
+class PendingAlertNotifier extends PersistedListNotifier<TransactionItem> {
   final Ref _ref;
 
-  PendingAlertNotifier(this._ref) : super(_initialPendingAlerts);
+  PendingAlertNotifier(this._ref, RecordStore store)
+      : super(
+          store: store,
+          seed: debugSeed(_initialPendingAlerts),
+          idOf: (item) => item.id,
+          toJson: (item) => item.toJson(),
+          fromJson: TransactionItem.fromJson,
+          sortOnLoad: (a, b) => b.date.compareTo(a.date),
+        );
 
   static final List<TransactionItem> _initialPendingAlerts = [
     TransactionItem(
@@ -69,6 +80,10 @@ class PendingAlertNotifier extends StateNotifier<List<TransactionItem>> {
     ),
   ];
 
+  void addAlert(TransactionItem alert) {
+    state = [alert, ...state];
+  }
+
   void dismissAlert(String alertId) {
     state = state.where((item) => item.id != alertId).toList();
   }
@@ -94,12 +109,19 @@ class PendingAlertNotifier extends StateNotifier<List<TransactionItem>> {
 
     // Add to transaction repository
     _ref.read(transactionProvider.notifier).addTransaction(confirmed);
+
+    // "Unaccounted" gaps have no merchant or narration worth learning from
+    if (alert.source == TransactionSource.bankAlert) {
+      _ref
+          .read(rulesProvider.notifier)
+          .learnFrom(alert, category: category, type: type);
+    }
   }
 }
 
 final pendingAlertsProvider =
     StateNotifierProvider<PendingAlertNotifier, List<TransactionItem>>((ref) {
-  return PendingAlertNotifier(ref);
+  return PendingAlertNotifier(ref, ref.watch(appStorageProvider).pendingAlerts);
 });
 
 final pendingAlertsCountProvider = Provider<int>((ref) {

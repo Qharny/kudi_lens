@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/storage/record_store.dart';
 import 'core/theme/app_theme.dart';
 import 'features/onboarding/views/splash_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final storage = await AppStorage.open();
 
   // Set system navigation & status bar style for clean light theme default
   SystemChrome.setSystemUIOverlayStyle(
@@ -18,7 +20,10 @@ void main() {
     ),
   );
 
-  runApp(const ProviderScope(child: KudiLensApp()));
+  runApp(ProviderScope(
+    overrides: [appStorageProvider.overrideWithValue(storage)],
+    child: const KudiLensApp(),
+  ));
 }
 
 class KudiLensApp extends StatelessWidget {

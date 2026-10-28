@@ -1,34 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/date_formatter.dart';
+import '../data/unrecognised_alerts_provider.dart';
 
-class UnrecognisedAlertsScreen extends StatelessWidget {
+class UnrecognisedAlertsScreen extends ConsumerWidget {
   const UnrecognisedAlertsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final palette = context.palette;
 
-    final samples = [
-      {
-        'sender': 'FidelityBank',
-        'date': DateTime.now().subtract(const Duration(days: 2)),
-        'raw':
-            'Debit: GHS 120.00 on A/C **8912. Trans: ATM WDL TARKWA. Avail Bal: GHS 540.20. Date: 24/10/2026.',
-      },
-      {
-        'sender': 'GCB Alert',
-        'date': DateTime.now().subtract(const Duration(days: 4)),
-        'raw':
-            'Dear Customer, your Acct 204***112 was debited with GHS 50.00 for E-Levy charges. Bal: GHS 312.10.',
-      },
-    ];
+    final alerts = ref.watch(unrecognisedAlertsProvider);
 
     return Scaffold(
       backgroundColor: palette.bg,
-      appBar: AppBar(
-        title: const Text('Unrecognised Alerts'),
-      ),
+      appBar: AppBar(title: const Text('Unrecognised Alerts')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -41,8 +29,11 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.lightbulb_outline_rounded,
-                    color: palette.textPrimary, size: 22),
+                Icon(
+                  Icons.lightbulb_outline_rounded,
+                  color: palette.textPrimary,
+                  size: 22,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -58,58 +49,74 @@ class UnrecognisedAlertsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ...samples.map((item) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: palette.surface,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: palette.border),
+          if (alerts.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 48),
+              child: Center(
+                child: Text(
+                  'No unrecognised alerts',
+                  style: TextStyle(color: palette.textMuted),
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        item['sender'] as String,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+            ),
+          ...alerts.map((item) {
+            return Dismissible(
+              key: ValueKey(item.id),
+              direction: DismissDirection.endToStart,
+              onDismissed: (_) =>
+                  ref.read(unrecognisedAlertsProvider.notifier).delete(item.id),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: palette.surface,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: palette.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.sender,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.primary,
+                          ),
                         ),
+                        Text(
+                          DateFormatter.formatShortDate(item.receivedAt),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: palette.textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: palette.card,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: palette.border),
                       ),
-                      Text(
-                        DateFormatter.formatShortDate(item['date'] as DateTime),
+                      child: Text(
+                        item.rawMessage,
                         style: TextStyle(
-                          fontSize: 11,
-                          color: palette.textMuted,
+                          fontFamily: 'monospace',
+                          fontSize: 12,
+                          color: palette.textSecondary,
+                          height: 1.4,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: palette.card,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: palette.border),
                     ),
-                    child: Text(
-                      item['raw'] as String,
-                      style: TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 12,
-                        color: palette.textSecondary,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           }),
