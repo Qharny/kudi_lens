@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/transaction.dart';
 import '../../../core/storage/persisted_list_notifier.dart';
 import '../../../core/storage/record_store.dart';
+import '../../rules/data/rules_provider.dart';
 import '../../transactions/data/transaction_provider.dart';
 
 class PendingAlertNotifier extends PersistedListNotifier<TransactionItem> {
@@ -104,6 +105,13 @@ class PendingAlertNotifier extends PersistedListNotifier<TransactionItem> {
 
     // Add to transaction repository
     _ref.read(transactionProvider.notifier).addTransaction(confirmed);
+
+    // "Unaccounted" gaps have no merchant or narration worth learning from
+    if (alert.source == TransactionSource.bankAlert) {
+      _ref
+          .read(rulesProvider.notifier)
+          .learnFrom(alert, category: category, type: type);
+    }
   }
 }
 
